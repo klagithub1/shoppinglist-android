@@ -3,14 +3,16 @@ package de.shoppinglist.android.bean;
 public class History extends BusinessBean {
 
 	private Shoppinglist shoppinglist;
-
-	private String store;
-
-	private String Product;
-
-	private String unit;
-
-	private String quantity;
+	
+	private ShoppinglistProductMapping itemHistory;
+	
+	public History() {
+		super();
+		this.itemHistory = new ShoppinglistProductMapping();
+		this.itemHistory.setStore(new Store());
+		this.itemHistory.setProduct(new Product());
+		this.itemHistory.getProduct().setUnit(new Unit());
+	}
 
 	public Shoppinglist getShoppinglist() {
 		return shoppinglist;
@@ -21,34 +23,34 @@ public class History extends BusinessBean {
 	}
 
 	public String getStore() {
-		return store;
+		return this.itemHistory.getStore().getName();
 	}
 
 	public void setStore(String store) {
-		this.store = store;
+		this.itemHistory.getStore().setName(store);
 	}
 
 	public String getProduct() {
-		return Product;
+		return this.itemHistory.getProduct().getName();
 	}
 
 	public void setProduct(String product) {
-		Product = product;
+		this.itemHistory.getProduct().setName(product);
 	}
 
 	public String getUnit() {
-		return unit;
+		return this.itemHistory.getProduct().getUnit().getName();
 	}
 
 	public void setUnit(String unit) {
-		this.unit = unit;
+		this.itemHistory.getProduct().getUnit().setName(unit);
 	}
 
 	public String getQuantity() {
-		return quantity;
+		return this.itemHistory.getQuantity();
 	}
 
 	public void setQuantity(String quantity) {
-		this.quantity = quantity;
+		this.itemHistory.setQuantity(quantity);
 	}
 }

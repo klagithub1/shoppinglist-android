@@ -58,35 +58,7 @@ public class EditStoreActivity extends AbstractShoppinglistActivity {
 
 		this.buttonConfirmEdit = (Button) this.findViewById(R.id.buttonConfirmAddStore);
 		this.buttonConfirmEdit.setText(R.string.button_text_save);
-		this.buttonConfirmEdit.setOnClickListener(new OnClickListener() {
-
-			public void onClick(final View v) {
-				if (EditStoreActivity.super.setErrorOnEmptyEditTexts(editTextIds)) {
-
-					// check whether there is a store with this name already
-					final Store alreadyExistingStore = EditStoreActivity.this.datasource
-							.getStoreByName(EditStoreActivity.this.editTextStoreName.getText()
-									.toString());
-
-					if (alreadyExistingStore == null) {
-
-						final Store storeToUpdate = new Store();
-						storeToUpdate.setId(selectedStoreId);
-						storeToUpdate.setName(EditStoreActivity.this.editTextStoreName.getText()
-								.toString());
-
-						EditStoreActivity.this.datasource.updateStore(storeToUpdate);
-						EditStoreActivity.this.finish();
-
-					} else {
-						Toast.makeText(
-								EditStoreActivity.this.context,
-								EditStoreActivity.this.getString(R.string.msg_store_already_exists),
-								Toast.LENGTH_SHORT).show();
-					}
-				}
-			}
-		});
+		this.buttonConfirmEdit.setOnClickListener(new ConfirmEditListener(selectedStoreId));
 	}
 
 	@Override
@@ -103,5 +75,42 @@ public class EditStoreActivity extends AbstractShoppinglistActivity {
 			break;
 		}
 		return false;
+	}
+
+
+	class ConfirmEditListener implements OnClickListener {
+		
+		private int selectedStoreId;
+		
+		public ConfirmEditListener(int selectedStoreId){
+			this.selectedStoreId = selectedStoreId;
+		}
+
+		public void onClick(final View v) {
+			if (EditStoreActivity.super.setErrorOnEmptyEditTexts(editTextIds)) {
+
+				// check whether there is a store with this name already
+				final Store alreadyExistingStore = EditStoreActivity.this.datasource
+						.getStoreByName(EditStoreActivity.this.editTextStoreName.getText()
+								.toString());
+
+				if (alreadyExistingStore == null) {
+
+					final Store storeToUpdate = new Store();
+					storeToUpdate.setId(selectedStoreId);
+					storeToUpdate.setName(EditStoreActivity.this.editTextStoreName.getText()
+							.toString());
+
+					EditStoreActivity.this.datasource.updateStore(storeToUpdate);
+					EditStoreActivity.this.finish();
+
+				} else {
+					Toast.makeText(
+							EditStoreActivity.this.context,
+							EditStoreActivity.this.getString(R.string.msg_store_already_exists),
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		}
 	}
 }

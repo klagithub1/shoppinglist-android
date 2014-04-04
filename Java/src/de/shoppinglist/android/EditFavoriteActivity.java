@@ -60,37 +60,7 @@ public class EditFavoriteActivity extends AbstractShoppinglistActivity {
 		this.buttonEditFavorite = (Button) this.findViewById(R.id.buttonConfirmAddFavoritelist);
 		this.buttonEditFavorite.setText(R.string.button_text_save);
 
-		this.buttonEditFavorite.setOnClickListener(new OnClickListener() {
-
-			public void onClick(final View v) {
-				if (EditFavoriteActivity.super.setErrorOnEmptyEditTexts(editTextIds)) {
-
-					// check whether there is already a favoritelist with this
-					// name
-					final Favorite alreadyExistingFavorite = EditFavoriteActivity.this.datasource
-							.getFavoriteByName(EditFavoriteActivity.this.editTextFavoriteName
-									.getText().toString());
-
-					if (alreadyExistingFavorite == null) {
-
-						final Favorite favoriteToUpdate = new Favorite();
-						favoriteToUpdate.setId(selectedFavoriteId);
-						favoriteToUpdate.setName(EditFavoriteActivity.this.editTextFavoriteName
-								.getText().toString());
-
-						EditFavoriteActivity.this.datasource.updateFavorite(favoriteToUpdate);
-						EditFavoriteActivity.this.finish();
-
-					} else {
-						Toast.makeText(
-								EditFavoriteActivity.this.context,
-								EditFavoriteActivity.this
-										.getString(R.string.msg_favorite_already_exists),
-								Toast.LENGTH_SHORT).show();
-					}
-				}
-			}
-		});
+		this.buttonEditFavorite.setOnClickListener(new EditFavoriteListener(selectedFavoriteId));
 	}
 
 	@Override
@@ -108,4 +78,40 @@ public class EditFavoriteActivity extends AbstractShoppinglistActivity {
 		}
 		return false;
 	}
+	
+	class EditFavoriteListener implements OnClickListener {
+		private int selectedFavorite;;
+		
+		public EditFavoriteListener(int selectedFavorite){
+			this.selectedFavorite = selectedFavorite;
+		}
+		
+		public void onClick(final View v) {
+			if (EditFavoriteActivity.super.setErrorOnEmptyEditTexts(editTextIds)) {
+
+				// check whether there is already a favoritelist with this
+				// name
+				final Favorite alreadyExistingFavorite = datasource.getFavoriteByName(editTextFavoriteName
+															.getText().toString());
+
+				if (alreadyExistingFavorite == null) {
+
+					final Favorite favoriteToUpdate = new Favorite();
+					favoriteToUpdate.setId(selectedFavorite);
+					favoriteToUpdate.setName(editTextFavoriteName.getText().toString());
+
+					datasource.updateFavorite(favoriteToUpdate);
+					finish();
+
+				} else {
+					Toast.makeText(
+							context,
+							getString(R.string.msg_favorite_already_exists),
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		}
+
+	}
 }
+

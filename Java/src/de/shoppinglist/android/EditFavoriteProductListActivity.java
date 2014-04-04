@@ -62,74 +62,7 @@ public class EditFavoriteProductListActivity extends AbstractShoppinglistActivit
 		this.listViewFavoriteProducts = (ListView) this.findViewById(R.id.listProductsInFavorite);
 		this.listViewFavoriteProducts.setAdapter(this.favoriteProductListAdapter);
 
-		this.listViewFavoriteProducts.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			public boolean onItemLongClick(final AdapterView<?> arg0, final View v,
-					final int position, final long id) {
-				// show popup menu
-				final PopupMenu popup = new PopupMenu(EditFavoriteProductListActivity.this.context,
-						v);
-				final MenuInflater inflater = popup.getMenuInflater();
-				inflater.inflate(R.menu.popupmenu_favorite_product_list, popup.getMenu());
-				popup.show();
-
-				// handle clicks on the popup-buttons
-				popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-
-					public boolean onMenuItemClick(final MenuItem item) {
-
-						final FavoriteProductMapping selectedMapping = EditFavoriteProductListActivity.this.favoriteProductListAdapter
-								.getItem(position);
-
-						switch (item.getItemId()) {
-
-						case R.id.popupEditFavoriteProductMapping:
-							// switch to the
-							// EditFavoriteProductMappingActivity
-							final Intent intentEditFavoriteProductMapping = new Intent(
-									EditFavoriteProductListActivity.this.context,
-									EditFavoriteProductMappingActivity.class);
-
-							// put the values of the mapping in the
-							// intent, so they can used by the other
-							// activity
-							intentEditFavoriteProductMapping.putExtra(
-									DBConstants.COL_FAVORITE_PRODUCT_MAPPING_ID,
-									selectedMapping.getId());
-							intentEditFavoriteProductMapping.putExtra(DBConstants.COL_FAVORITE_ID,
-									selectedMapping.getFavorite().getId());
-							intentEditFavoriteProductMapping.putExtra(
-									DBConstants.COL_FAVORITE_PRODUCT_MAPPING_QUANTITY,
-									selectedMapping.getQuantity());
-							intentEditFavoriteProductMapping.putExtra(DBConstants.COL_UNIT_ID,
-									selectedMapping.getProduct().getUnit().getId());
-							intentEditFavoriteProductMapping.putExtra(DBConstants.COL_PRODUCT_NAME,
-									selectedMapping.getProduct().getName());
-							intentEditFavoriteProductMapping.putExtra(DBConstants.COL_PRODUCT_ID,
-									selectedMapping.getProduct().getId());
-							intentEditFavoriteProductMapping.putExtra(DBConstants.COL_STORE_ID,
-									selectedMapping.getStore().getId());
-
-							EditFavoriteProductListActivity.this.startActivityForResult(
-									intentEditFavoriteProductMapping, 0);
-
-							return true;
-
-						case R.id.popupDeleteFavoriteProductMapping:
-							// delete this mappping
-							EditFavoriteProductListActivity.this.datasource
-									.deleteFavoriteProductMapping(selectedMapping.getId());
-							return true;
-
-						default:
-							return false;
-						}
-					}
-				});
-
-				return false;
-			}
-		});
+		this.listViewFavoriteProducts.setOnItemLongClickListener(new EditFavoriteProductListener());
 	}
 
 	@Override
@@ -166,6 +99,7 @@ public class EditFavoriteProductListActivity extends AbstractShoppinglistActivit
 		return false;
 	}
 
+	
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -175,5 +109,69 @@ public class EditFavoriteProductListActivity extends AbstractShoppinglistActivit
 		this.favoriteProductListAdapter = new FavoriteProductListAdapter(this,
 				this.favoriteProductMappings);
 		this.listViewFavoriteProducts.setAdapter(this.favoriteProductListAdapter);
+	}
+	
+	class EditFavoriteProductListener implements OnItemLongClickListener{
+		public boolean onItemLongClick(final AdapterView<?> arg0, final View v,
+				final int position, final long id) {
+			// show popup menu
+			final PopupMenu popup = new PopupMenu(context, v);
+			final MenuInflater inflater = popup.getMenuInflater();
+			inflater.inflate(R.menu.popupmenu_favorite_product_list, popup.getMenu());
+			popup.show();
+
+			// handle clicks on the popup-buttons
+			popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+				public boolean onMenuItemClick(final MenuItem item) {
+
+					final FavoriteProductMapping selectedMapping = EditFavoriteProductListActivity.this.favoriteProductListAdapter
+							.getItem(position);
+
+					switch (item.getItemId()) {
+
+					case R.id.popupEditFavoriteProductMapping:
+						// switch to the
+						// EditFavoriteProductMappingActivity
+						final Intent intentEditFavoriteProductMapping = new Intent(context,
+								EditFavoriteProductMappingActivity.class);
+
+						// put the values of the mapping in the
+						// intent, so they can used by the other
+						// activity
+						intentEditFavoriteProductMapping.putExtra(
+								DBConstants.COL_FAVORITE_PRODUCT_MAPPING_ID,
+								selectedMapping.getId());
+						intentEditFavoriteProductMapping.putExtra(DBConstants.COL_FAVORITE_ID,
+								selectedMapping.getFavorite().getId());
+						intentEditFavoriteProductMapping.putExtra(
+								DBConstants.COL_FAVORITE_PRODUCT_MAPPING_QUANTITY,
+								selectedMapping.getQuantity());
+						intentEditFavoriteProductMapping.putExtra(DBConstants.COL_UNIT_ID,
+								selectedMapping.getProduct().getUnit().getId());
+						intentEditFavoriteProductMapping.putExtra(DBConstants.COL_PRODUCT_NAME,
+								selectedMapping.getProduct().getName());
+						intentEditFavoriteProductMapping.putExtra(DBConstants.COL_PRODUCT_ID,
+								selectedMapping.getProduct().getId());
+						intentEditFavoriteProductMapping.putExtra(DBConstants.COL_STORE_ID,
+								selectedMapping.getStore().getId());
+
+						startActivityForResult(intentEditFavoriteProductMapping, 0);
+
+						return true;
+
+					case R.id.popupDeleteFavoriteProductMapping:
+						// delete this mappping
+						datasource.deleteFavoriteProductMapping(selectedMapping.getId());
+						return true;
+
+					default:
+						return false;
+					}
+				}
+			});
+
+			return false;
+		}
 	}
 }

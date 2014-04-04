@@ -43,31 +43,7 @@ public class AddStoreActivity extends AbstractShoppinglistActivity {
 				.getTextWatcher(R.id.editTextNameAddStore));
 
 		this.buttonAddStore = (Button) this.findViewById(R.id.buttonConfirmAddStore);
-		this.buttonAddStore.setOnClickListener(new OnClickListener() {
-
-			public void onClick(final View v) {
-				if (AddStoreActivity.super.setErrorOnEmptyEditTexts(editTextIds)) {
-
-					// check whether there is already a store with this name
-					final Store alreadyExistingStore = AddStoreActivity.this.datasource
-							.getStoreByName(AddStoreActivity.this.editTextStoreName.getText()
-									.toString());
-
-					if (alreadyExistingStore == null) {
-						// save new store, when there is no store with this name
-						AddStoreActivity.this.datasource
-								.saveStore(AddStoreActivity.this.editTextStoreName.getText()
-										.toString());
-						AddStoreActivity.this.finish();
-
-					} else {
-						Toast.makeText(AddStoreActivity.this.context,
-								AddStoreActivity.this.getString(R.string.msg_store_already_exists),
-								Toast.LENGTH_SHORT).show();
-					}
-				}
-			}
-		});
+		this.buttonAddStore.setOnClickListener(new AddStoreListener());
 	}
 
 	@Override
@@ -84,5 +60,26 @@ public class AddStoreActivity extends AbstractShoppinglistActivity {
 			break;
 		}
 		return false;
+	}
+	
+	class AddStoreListener implements OnClickListener {
+		public void onClick(final View v) {
+			if (AddStoreActivity.super.setErrorOnEmptyEditTexts(editTextIds)) {
+
+				// check whether there is already a store with this name
+				final Store alreadyExistingStore = datasource.getStoreByName(editTextStoreName.getText().toString());
+
+				if (alreadyExistingStore == null) {
+					// save new store, when there is no store with this name
+					datasource.saveStore(editTextStoreName.getText().toString());
+					AddStoreActivity.this.finish();
+
+				} else {
+					Toast.makeText(AddStoreActivity.this.context,
+							getString(R.string.msg_store_already_exists), Toast.LENGTH_SHORT).show();
+				}
+			}
+		}
+	
 	}
 }

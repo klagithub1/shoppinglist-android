@@ -43,34 +43,7 @@ public class AddFavoriteActivity extends AbstractShoppinglistActivity {
 				.getTextWatcher(R.id.editTextNameAddFavoritelist));
 
 		this.buttonAddFavorite = (Button) this.findViewById(R.id.buttonConfirmAddFavoritelist);
-		this.buttonAddFavorite.setOnClickListener(new OnClickListener() {
-
-			public void onClick(final View v) {
-				if (AddFavoriteActivity.super.setErrorOnEmptyEditTexts(editTextIds)) {
-					// check whether there is already a favoritelist with this
-					// name
-					final Favorite alreadyExistingFavorite = AddFavoriteActivity.this.datasource
-							.getFavoriteByName(AddFavoriteActivity.this.editTextFavoriteName
-									.getText().toString());
-					if (alreadyExistingFavorite == null) {
-						// save new favorite, when there is no favorite with
-						// this
-						// name
-						AddFavoriteActivity.this.datasource
-								.saveFavorite(AddFavoriteActivity.this.editTextFavoriteName
-										.getText().toString());
-						AddFavoriteActivity.this.finish();
-
-					} else {
-						Toast.makeText(
-								AddFavoriteActivity.this.context,
-								AddFavoriteActivity.this
-										.getString(R.string.msg_favorite_already_exists),
-								Toast.LENGTH_SHORT).show();
-					}
-				}
-			}
-		});
+		this.buttonAddFavorite.setOnClickListener(new AddFavoriteListener());
 	}
 
 	@Override
@@ -88,4 +61,28 @@ public class AddFavoriteActivity extends AbstractShoppinglistActivity {
 		}
 		return false;
 	}
+	
+	class AddFavoriteListener implements OnClickListener {
+
+			public void onClick(final View v) {
+				if (AddFavoriteActivity.super.setErrorOnEmptyEditTexts(editTextIds)) {
+					// check whether there is already a favoritelist with this
+					// name
+					final Favorite alreadyExistingFavorite = datasource.getFavoriteByName(
+																editTextFavoriteName.getText().toString());
+					if (alreadyExistingFavorite == null) {
+						// save new favorite, when there is no favorite with
+						// this
+						// name
+						datasource.saveFavorite(editTextFavoriteName.getText().toString());
+						AddFavoriteActivity.this.finish();
+
+					} else {
+						Toast.makeText(
+								context, getString(R.string.msg_favorite_already_exists), Toast.LENGTH_SHORT).show();
+					}
+				}
+			}
+		}
+	
 }

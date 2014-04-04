@@ -57,34 +57,7 @@ public class EditUnitActivity extends AbstractShoppinglistActivity {
 
 		this.buttonConfirmEdit = (Button) this.findViewById(R.id.buttonConfirmAddUnit);
 		this.buttonConfirmEdit.setText(R.string.button_text_save);
-		this.buttonConfirmEdit.setOnClickListener(new OnClickListener() {
-
-			public void onClick(final View v) {
-				if (EditUnitActivity.super.setErrorOnEmptyEditTexts(editTextIds)) {
-
-					// check whether there is an unit with this name already
-					final Unit alreadyExistingUnit = EditUnitActivity.this.datasource
-							.getUnitByName(EditUnitActivity.this.editTextUnitName.getText()
-									.toString());
-
-					if (alreadyExistingUnit == null) {
-
-						final Unit unitToUpdate = new Unit();
-						unitToUpdate.setId(selectedUnitId);
-						unitToUpdate.setName(EditUnitActivity.this.editTextUnitName.getText()
-								.toString());
-
-						EditUnitActivity.this.datasource.updateUnit(unitToUpdate);
-						EditUnitActivity.this.finish();
-
-					} else {
-						Toast.makeText(EditUnitActivity.this.context,
-								EditUnitActivity.this.getString(R.string.msg_unit_already_exists),
-								Toast.LENGTH_SHORT).show();
-					}
-				}
-			}
-		});
+		this.buttonConfirmEdit.setOnClickListener(new ConfirmEditUnitListener(selectedUnitId));
 	}
 
 	@Override
@@ -101,5 +74,40 @@ public class EditUnitActivity extends AbstractShoppinglistActivity {
 			break;
 		}
 		return false;
+	}
+	
+	class ConfirmEditUnitListener implements OnClickListener {
+		private int selectedUnitId;
+		
+		public ConfirmEditUnitListener(int selectedUnitId){
+			this.selectedUnitId = selectedUnitId;
+		}
+		
+		
+		public void onClick(final View v) {
+			if (EditUnitActivity.super.setErrorOnEmptyEditTexts(editTextIds)) {
+
+				// check whether there is an unit with this name already
+				final Unit alreadyExistingUnit = EditUnitActivity.this.datasource
+						.getUnitByName(EditUnitActivity.this.editTextUnitName.getText()
+								.toString());
+
+				if (alreadyExistingUnit == null) {
+
+					final Unit unitToUpdate = new Unit();
+					unitToUpdate.setId(selectedUnitId);
+					unitToUpdate.setName(EditUnitActivity.this.editTextUnitName.getText()
+							.toString());
+
+					EditUnitActivity.this.datasource.updateUnit(unitToUpdate);
+					EditUnitActivity.this.finish();
+
+				} else {
+					Toast.makeText(EditUnitActivity.this.context,
+							EditUnitActivity.this.getString(R.string.msg_unit_already_exists),
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		}
 	}
 }

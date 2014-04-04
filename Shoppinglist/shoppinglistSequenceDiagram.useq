@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence-diagram version="1.1.4" icons="true" automaticImage="JPEG">  
+  <object id="1" language="java" name="de.shoppinglist.android.AddProductActivity" project="Shoppinglist" 
+    file="/Shoppinglist/src/de/shoppinglist/android/AddProductActivity.java" binary="false" label="addProductActivity" 
+    type="class" autoSize="true">    
+    <position height="729" width="135" x="0" y="0"/>    
+    <execution id="2">      
+      <position height="534" width="0" x="0" y="78"/>    
+    </execution>    
+    <execution id="22">      
+      <position height="21" width="0" x="0" y="570"/>    
+    </execution>  
+  </object>  
+  <object id="23" language="java" name="de.shoppinglist.android.datasource.ShoppinglistDataSource" 
+    project="Shoppinglist" file="/Shoppinglist/src/de/shoppinglist/android/datasource/ShoppinglistDataSource.java" 
+    binary="false" label="datasource" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="4">      
+      <position height="21" width="0" x="0" y="99"/>    
+    </execution>    
+    <execution id="6">      
+      <position height="21" width="0" x="0" y="158"/>    
+    </execution>    
+    <execution id="8">      
+      <position height="21" width="0" x="0" y="199"/>    
+    </execution>    
+    <execution id="10">      
+      <position height="21" width="0" x="0" y="241"/>    
+    </execution>    
+    <execution id="14">      
+      <position height="21" width="0" x="0" y="344"/>    
+    </execution>    
+    <execution id="20">      
+      <position height="21" width="0" x="0" y="495"/>    
+    </execution>  
+  </object>  
+  <object id="24" language="java" name="de.shoppinglist.android.bean.ShoppinglistProductMapping" project="Shoppinglist" 
+    file="/Shoppinglist/src/de/shoppinglist/android/bean/ShoppinglistProductMapping.java" binary="false" 
+    label="alreadyExistingMapping" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="12">      
+      <position height="21" width="0" x="0" y="311"/>    
+    </execution>    
+    <execution id="16">      
+      <position height="42" width="0" x="0" y="389"/>    
+    </execution>    
+    <execution id="18">      
+      <position height="42" width="0" x="0" y="443"/>    
+    </execution>  
+  </object>  
+  <object id="29" language="java" name="de.shoppinglist.android.bean.Store" project="Shoppinglist" 
+    file="/Shoppinglist/src/de/shoppinglist/android/bean/Store.java" binary="false" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="26">      
+      <position height="21" width="125" x="494" y="389"/>    
+    </execution>  
+  </object>  
+  <object id="30" language="java" name="de.shoppinglist.android.bean.Product" project="Shoppinglist" 
+    file="/Shoppinglist/src/de/shoppinglist/android/bean/Product.java" binary="false" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="28">      
+      <position height="21" width="125" x="623" y="443"/>    
+    </execution>  
+  </object>  
+  <message id="3" operation="getProductByNameAndUnit(java.lang.String,int):de.shoppinglist.android.bean.Product">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </message>  
+  <message id="5" operation="saveProduct(java.lang.String,int):void">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="6"/>  
+  </message>  
+  <message id="7" operation="getProductByNameAndUnit(java.lang.String,int):de.shoppinglist.android.bean.Product">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="8"/>  
+  </message>  
+  <message id="9" 
+    operation="checkWhetherShoppinglistProductMappingExists(int,int):de.shoppinglist.android.bean.ShoppinglistProductMapping">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="10"/>  
+  </message>  
+  <message id="11" operation="getQuantity():java.lang.String">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="12"/>  
+  </message>  
+  <message id="13" operation="updateShoppinglistProductMapping(int,int,int,java.lang.String):void">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="14"/>  
+  </message>  
+  <message id="15" operation="getStore():de.shoppinglist.android.bean.Store">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="16"/>  
+  </message>  
+  <message id="17" operation="getProduct():de.shoppinglist.android.bean.Product">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="18"/>  
+  </message>  
+  <message id="19" operation="saveShoppingListProductMapping(int,int,java.lang.String,short):void">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="20"/>  
+  </message>  
+  <message id="21" operation="finish():void">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="22"/>  
+  </message>  
+  <message id="25" operation="getId():int">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="26"/>  
+  </message>  
+  <message id="27" operation="getId():int">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="28"/>  
+  </message>
+</sequence-diagram>

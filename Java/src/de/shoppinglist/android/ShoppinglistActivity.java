@@ -280,63 +280,10 @@ public class ShoppinglistActivity extends AbstractShoppinglistActivity {
 		});
 
 		// handle long clicks on the list items
-		this.listStore.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			public boolean onItemLongClick(final AdapterView<?> arg0, final View v,
-					final int position, final long id) {
-
-				// show popup menu
-				final PopupMenu popup = new PopupMenu(ShoppinglistActivity.this.context, v);
-				final MenuInflater inflater = popup.getMenuInflater();
-				inflater.inflate(R.menu.popupmenu_store_overview, popup.getMenu());
-				popup.show();
-
-				// handle clicks on the popup-buttons
-				popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-
-					public boolean onMenuItemClick(final MenuItem item) {
-
-						switch (item.getItemId()) {
-						case R.id.popupDeleteStoreEntries:
-							// delete from mapping
-							final Store storeToDeleteProductsFrom = ShoppinglistActivity.this.storeListAdapter
-									.getItem(position);
-							ShoppinglistActivity.this.datasource
-									.deleteProductsFromStoreList(storeToDeleteProductsFrom.getId());
-							ShoppinglistActivity.this.storeListAdapter
-									.remove(storeToDeleteProductsFrom);
-
-							return true;
-						default:
-							return false;
-						}
-					}
-
-				});
-
-				return false;
-			}
-
-		});
+		this.listStore.setOnItemLongClickListener(new EditItemListener());
 
 		// handle "normal" clicks on the list items
-		this.listStore.setOnItemClickListener(new OnItemClickListener() {
-
-			public void onItemClick(final AdapterView<?> arg0, final View v, final int position,
-					final long id) {
-
-				final Store clickedStore = ShoppinglistActivity.this.storeListAdapter
-						.getItem(position);
-
-				// call another Activity to show the products of the clicked
-				// store
-				final Intent intent = new Intent(v.getContext(), StoreProductsActivity.class);
-				intent.putExtra(DBConstants.COL_STORE_ID, clickedStore.getId());
-				intent.putExtra(DBConstants.COL_STORE_NAME, clickedStore.getName());
-				ShoppinglistActivity.this.startActivityForResult(intent, 0);
-			}
-
-		});
+		this.listStore.setOnItemClickListener(new CheckItemListener());
 	}
 
 	/** Called when the activity is first created. */
@@ -528,6 +475,60 @@ public class ShoppinglistActivity extends AbstractShoppinglistActivity {
 			} else {
 				this.buttonAddToHistoryAlphabeticallyView.setVisibility(View.INVISIBLE);
 			}
+		}
+
+	}
+	
+	class CheckItemListener implements OnItemClickListener {
+
+			public void onItemClick(final AdapterView<?> arg0, final View v, final int position,
+					final long id) {
+
+				final Store clickedStore = ShoppinglistActivity.this.storeListAdapter
+						.getItem(position);
+
+				// call another Activity to show the products of the clicked
+				// store
+				final Intent intent = new Intent(v.getContext(), StoreProductsActivity.class);
+				intent.putExtra(DBConstants.COL_STORE_ID, clickedStore.getId());
+				intent.putExtra(DBConstants.COL_STORE_NAME, clickedStore.getName());
+				startActivityForResult(intent, 0);
+			}
+	}
+	
+	class EditItemListener implements OnItemLongClickListener {
+		
+		public boolean onItemLongClick(final AdapterView<?> arg0, final View v,
+				final int position, final long id) {
+
+			// show popup menu
+			final PopupMenu popup = new PopupMenu(context, v);
+			final MenuInflater inflater = popup.getMenuInflater();
+			inflater.inflate(R.menu.popupmenu_store_overview, popup.getMenu());
+			popup.show();
+
+			// handle clicks on the popup-buttons
+			popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+				public boolean onMenuItemClick(final MenuItem item) {
+
+					switch (item.getItemId()) {
+					case R.id.popupDeleteStoreEntries:
+						// delete from mapping
+						final Store storeToDeleteProductsFrom = storeListAdapter.getItem(position);
+						datasource.deleteProductsFromStoreList(storeToDeleteProductsFrom.getId());
+						storeListAdapter.remove(storeToDeleteProductsFrom);
+
+						return true;
+					default:
+						return false;
+					}
+				}
+
+			});
+
+			return false;
+			
 		}
 
 	}

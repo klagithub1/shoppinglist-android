@@ -51,36 +51,10 @@ public class UserConfigurationActivity extends AbstractShoppinglistActivity {
 		}
 
 		this.buttonSaveConfiguration = (Button) this.findViewById(R.id.buttonSaveUserConfiguration);
-		this.buttonSaveConfiguration.setOnClickListener(new OnClickListener() {
-
-			public void onClick(final View v) {
-				short viewType = ConfigurationConstants.STORE_VIEW;
-
-				if (UserConfigurationActivity.this.radioButtonViewTypeStore.isChecked()) {
-					viewType = ConfigurationConstants.STORE_VIEW;
-
-				} else if (UserConfigurationActivity.this.radioButtonViewTypeAlphabetically
-						.isChecked()) {
-					viewType = ConfigurationConstants.ALPHABETICALLY_VIEW;
-				}
-
-				UserConfigurationActivity.this.datasource.setUserConfiguration(viewType);
-				UserConfigurationActivity.this.finish();
-			}
-
-		});
+		this.buttonSaveConfiguration.setOnClickListener(new SaveConfigurationListener());
 
 		this.buttonExportEmail = (Button) this.findViewById(R.id.buttonExportEmail);
-		this.buttonExportEmail.setOnClickListener(new OnClickListener() {
-
-			public void onClick(final View v) {
-				final Intent intentExportEmail = new Intent(UserConfigurationActivity.this.context,
-						SendEmailActivity.class);
-				UserConfigurationActivity.this.startActivityForResult(intentExportEmail, 0);
-			}
-
-		});
-
+		this.buttonExportEmail.setOnClickListener(new ExportEmailListener());
 		this.buttonExportGoogle = (Button) this.findViewById(R.id.buttonExportGoogle);
 		this.buttonExportGoogle.setOnClickListener(new OnClickListener() {
 
@@ -107,5 +81,31 @@ public class UserConfigurationActivity extends AbstractShoppinglistActivity {
 			break;
 		}
 		return false;
+	}
+	
+	class SaveConfigurationListener implements OnClickListener {
+
+		public void onClick(final View v) {
+			short viewType = ConfigurationConstants.STORE_VIEW;
+
+			if (radioButtonViewTypeStore.isChecked()) {
+				viewType = ConfigurationConstants.STORE_VIEW;
+
+			} else if (radioButtonViewTypeAlphabetically.isChecked()) {
+				viewType = ConfigurationConstants.ALPHABETICALLY_VIEW;
+			}
+
+			datasource.setUserConfiguration(viewType);
+			finish();
+		}
+	}
+	
+	class ExportEmailListener implements OnClickListener {
+		
+		public void onClick(final View v) {
+			final Intent intentExportEmail = new Intent(UserConfigurationActivity.this.context,
+					SendEmailActivity.class);
+			UserConfigurationActivity.this.startActivityForResult(intentExportEmail, 0);
+		}
 	}
 }

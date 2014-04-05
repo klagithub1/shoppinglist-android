@@ -79,120 +79,10 @@ public class StoreProductsActivity extends AbstractShoppinglistActivity {
 		this.listShoppinglistProductMapping.setAdapter(this.shoppinglistProductMappingAdapter);
 
 		// handle "normal" clicks on shoppinglistItems -> mark them as checked
-		this.listShoppinglistProductMapping.setOnItemClickListener(new OnItemClickListener() {
-
-			public void onItemClick(final AdapterView<?> arg0, final View v, final int position,
-					final long id) {
-
-				final ShoppinglistProductMapping clickedMapping = StoreProductsActivity.this.shoppinglistProductMappingAdapter
-						.getItem(position);
-
-				if (clickedMapping.isChecked() == GlobalValues.NO) {
-
-					StoreProductsActivity.this.shoppinglistProductMappings.get(
-							StoreProductsActivity.this.shoppinglistProductMappings
-									.indexOf(clickedMapping)).setChecked(GlobalValues.YES);
-					StoreProductsActivity.this.datasource
-							.markShoppinglistProductMappingAsChecked(clickedMapping.getId());
-				} else if (clickedMapping.isChecked() == GlobalValues.YES) {
-
-					StoreProductsActivity.this.shoppinglistProductMappings.get(
-							StoreProductsActivity.this.shoppinglistProductMappings
-									.indexOf(clickedMapping)).setChecked(GlobalValues.NO);
-					StoreProductsActivity.this.datasource
-							.markShoppinglistProductMappingAsUnchecked(clickedMapping.getId());
-				}
-
-				StoreProductsActivity.this.shoppinglistProductMappingAdapter.notifyDataSetChanged();
-
-				// update the process
-				StoreProductsActivity.this.setProcessTextInStoreView();
-			}
-		});
+		this.listShoppinglistProductMapping.setOnItemClickListener(new CheckItemListener());
 
 		// handle long-clicks on shoppinglistItems
-		this.listShoppinglistProductMapping
-				.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-					public boolean onItemLongClick(final AdapterView<?> arg0, final View v,
-							final int position, final long id) {
-
-						final PopupMenu popup = new PopupMenu(StoreProductsActivity.this.context, v);
-						final MenuInflater inflater = popup.getMenuInflater();
-						inflater.inflate(R.menu.popupmenu_products_overview, popup.getMenu());
-						popup.show();
-						// handle clicks on the popup-buttons
-						popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-
-							public boolean onMenuItemClick(final MenuItem item) {
-								ShoppinglistProductMapping shoppinglistProductMapping = StoreProductsActivity.this.shoppinglistProductMappingAdapter
-										.getItem(position);
-
-								switch (item.getItemId()) {
-
-								// buttonEditProduct - Popup (longClick)
-								case R.id.popupEditProduct:
-
-									// switch to the addProductActivity
-									final Intent intent = new Intent(
-											StoreProductsActivity.this.context,
-											EditProductActivity.class);
-
-									// put the values of the mapping in the
-									// intent, so they can used by the other
-									// activity
-									intent.putExtra(
-											DBConstants.COL_SHOPPINGLIST_PRODUCT_MAPPING_ID,
-											shoppinglistProductMapping.getId());
-									intent.putExtra(
-											DBConstants.COL_SHOPPINGLIST_PRODUCT_MAPPING_QUANTITY,
-											shoppinglistProductMapping.getQuantity());
-									intent.putExtra(DBConstants.COL_UNIT_ID,
-											shoppinglistProductMapping.getProduct().getUnit()
-													.getId());
-									intent.putExtra(DBConstants.COL_PRODUCT_NAME,
-											shoppinglistProductMapping.getProduct().getName());
-									intent.putExtra(DBConstants.COL_PRODUCT_ID,
-											shoppinglistProductMapping.getProduct().getId());
-									intent.putExtra(DBConstants.COL_STORE_ID,
-											shoppinglistProductMapping.getStore().getId());
-
-									StoreProductsActivity.this.startActivityForResult(intent, 0);
-
-									return true;
-
-									// buttonDeleteProduct - Popup (longClick)
-								case R.id.popupDeleteProduct:
-									// delete from mapping
-									shoppinglistProductMapping = StoreProductsActivity.this.shoppinglistProductMappingAdapter
-											.getItem(position);
-									StoreProductsActivity.this.datasource
-											.deleteShoppinglistProductMapping(shoppinglistProductMapping
-													.getId());
-									StoreProductsActivity.this.shoppinglistProductMappingAdapter
-											.remove(shoppinglistProductMapping);
-
-									if (StoreProductsActivity.this.shoppinglistProductMappingAdapter
-											.getCount() == 0) {
-										StoreProductsActivity.this.finish();
-									} else {
-										// update the process
-										StoreProductsActivity.this.setProcessTextInStoreView();
-									}
-
-									return true;
-								default:
-									return false;
-								}
-
-							}
-
-						});
-
-						return false;
-					}
-
-				});
+		this.listShoppinglistProductMapping.setOnItemLongClickListener(new EditProductListener());
 	}
 
 	@Override
@@ -336,4 +226,106 @@ public class StoreProductsActivity extends AbstractShoppinglistActivity {
 				+ allMappingsCount + " )");
 		this.labelProcessStoreProducts.setTextColor(colorToShow);
 	}
+	
+	class CheckItemListener implements OnItemClickListener {
+		public void onItemClick(final AdapterView<?> arg0, final View v, final int position,
+				final long id) {
+
+			final ShoppinglistProductMapping clickedMapping = StoreProductsActivity.this.shoppinglistProductMappingAdapter
+					.getItem(position);
+
+			if (clickedMapping.isChecked() == GlobalValues.NO) {
+
+				shoppinglistProductMappings.get(
+						shoppinglistProductMappings.indexOf(clickedMapping)).setChecked(GlobalValues.YES);
+				datasource.markShoppinglistProductMappingAsChecked(clickedMapping.getId());
+			} else if (clickedMapping.isChecked() == GlobalValues.YES) {
+
+				shoppinglistProductMappings.get(shoppinglistProductMappings.indexOf(clickedMapping)).setChecked(GlobalValues.NO);
+				datasource.markShoppinglistProductMappingAsUnchecked(clickedMapping.getId());
+			}
+
+			shoppinglistProductMappingAdapter.notifyDataSetChanged();
+
+			// update the process
+			setProcessTextInStoreView();
+		}
+
+	}
+	
+	class EditProductListener implements OnItemLongClickListener {
+		public boolean onItemLongClick(final AdapterView<?> arg0, final View v,
+				final int position, final long id) {
+
+			final PopupMenu popup = new PopupMenu(StoreProductsActivity.this.context, v);
+			final MenuInflater inflater = popup.getMenuInflater();
+			inflater.inflate(R.menu.popupmenu_products_overview, popup.getMenu());
+			popup.show();
+			// handle clicks on the popup-buttons
+			popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+				public boolean onMenuItemClick(final MenuItem item) {
+					ShoppinglistProductMapping shoppinglistProductMapping = StoreProductsActivity.this.shoppinglistProductMappingAdapter
+							.getItem(position);
+
+					switch (item.getItemId()) {
+
+					// buttonEditProduct - Popup (longClick)
+					case R.id.popupEditProduct:
+
+						// switch to the addProductActivity
+						final Intent intent = new Intent(context, EditProductActivity.class);
+
+						// put the values of the mapping in the
+						// intent, so they can used by the other
+						// activity
+						intent.putExtra(
+								DBConstants.COL_SHOPPINGLIST_PRODUCT_MAPPING_ID,
+								shoppinglistProductMapping.getId());
+						intent.putExtra(
+								DBConstants.COL_SHOPPINGLIST_PRODUCT_MAPPING_QUANTITY,
+								shoppinglistProductMapping.getQuantity());
+						intent.putExtra(DBConstants.COL_UNIT_ID,
+								shoppinglistProductMapping.getProduct().getUnit()
+										.getId());
+						intent.putExtra(DBConstants.COL_PRODUCT_NAME,
+								shoppinglistProductMapping.getProduct().getName());
+						intent.putExtra(DBConstants.COL_PRODUCT_ID,
+								shoppinglistProductMapping.getProduct().getId());
+						intent.putExtra(DBConstants.COL_STORE_ID,
+								shoppinglistProductMapping.getStore().getId());
+
+						StoreProductsActivity.this.startActivityForResult(intent, 0);
+
+						return true;
+
+						// buttonDeleteProduct - Popup (longClick)
+					case R.id.popupDeleteProduct:
+						// delete from mapping
+						shoppinglistProductMapping = shoppinglistProductMappingAdapter
+								.getItem(position);
+						datasource.deleteShoppinglistProductMapping(shoppinglistProductMapping
+										.getId());
+						shoppinglistProductMappingAdapter.remove(shoppinglistProductMapping);
+
+						if (shoppinglistProductMappingAdapter.getCount() == 0) {
+							StoreProductsActivity.this.finish();
+						} else {
+							// update the process
+							StoreProductsActivity.this.setProcessTextInStoreView();
+						}
+
+						return true;
+					default:
+						return false;
+					}
+
+				}
+
+			});
+
+			return false;
+		}
+	}
 }
+

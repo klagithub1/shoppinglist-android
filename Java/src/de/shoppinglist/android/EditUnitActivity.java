@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import de.shoppinglist.android.bean.Unit;
+import de.shoppinglist.android.bean.Object;
 import de.shoppinglist.android.constant.DBConstants;
 import de.shoppinglist.android.datasource.ShoppinglistDataSource;
 
@@ -28,8 +28,7 @@ public class EditUnitActivity extends AbstractShoppinglistActivity {
 
 	private EditText editTextUnitName;
 
-	private List<Integer> editTextIds = new LinkedList<Integer>(
-			Arrays.asList(R.id.editTextNameAddUnit));
+	private List<Integer> editTextIds = new LinkedList<Integer>(Arrays.asList(R.id.editTextNameAddUnit));
 
 	private TextView textViewTitle;
 
@@ -52,14 +51,37 @@ public class EditUnitActivity extends AbstractShoppinglistActivity {
 
 		this.editTextUnitName = (EditText) this.findViewById(R.id.editTextNameAddUnit);
 		this.editTextUnitName.setText(selectedUnitName);
-		this.editTextUnitName
-				.addTextChangedListener(super.getTextWatcher(R.id.editTextNameAddUnit));
+		this.editTextUnitName.addTextChangedListener(super.getTextWatcher(R.id.editTextNameAddUnit));
 
 		this.buttonConfirmEdit = (Button) this.findViewById(R.id.buttonConfirmAddUnit);
 		this.buttonConfirmEdit.setText(R.string.button_text_save);
-		this.buttonConfirmEdit.setOnClickListener(new ConfirmEditUnitListener(selectedUnitId));
-	}
+		this.buttonConfirmEdit.setOnClickListener(new OnClickListener() {
 
+			public void onClick(final View v) {
+				if (EditUnitActivity.super.setErrorOnEmptyEditTexts(editTextIds)) {
+
+					// check whether there is an unit with this name already
+					final Object alreadyExistingUnit = EditUnitActivity.this.datasource
+							.getUnitByName(EditUnitActivity.this.editTextUnitName.getText().toString());
+
+					if (alreadyExistingUnit == null) {
+
+						final Object unitToUpdate = new Object();
+						unitToUpdate.setId(selectedUnitId);
+						unitToUpdate.setName(EditUnitActivity.this.editTextUnitName.getText().toString());
+
+						EditUnitActivity.this.datasource.updateUnit(unitToUpdate);
+						EditUnitActivity.this.finish();
+
+					} else {
+						Toast.makeText(EditUnitActivity.this.context,
+								EditUnitActivity.this.getString(R.string.msg_unit_already_exists), Toast.LENGTH_SHORT).show();
+					}
+				}
+			}
+		});
+	}
+	
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
 		switch (item.getItemId()) {
@@ -74,40 +96,5 @@ public class EditUnitActivity extends AbstractShoppinglistActivity {
 			break;
 		}
 		return false;
-	}
-	
-	class ConfirmEditUnitListener implements OnClickListener {
-		private int selectedUnitId;
-		
-		public ConfirmEditUnitListener(int selectedUnitId){
-			this.selectedUnitId = selectedUnitId;
-		}
-		
-		
-		public void onClick(final View v) {
-			if (EditUnitActivity.super.setErrorOnEmptyEditTexts(editTextIds)) {
-
-				// check whether there is an unit with this name already
-				final Unit alreadyExistingUnit = EditUnitActivity.this.datasource
-						.getUnitByName(EditUnitActivity.this.editTextUnitName.getText()
-								.toString());
-
-				if (alreadyExistingUnit == null) {
-
-					final Unit unitToUpdate = new Unit();
-					unitToUpdate.setId(selectedUnitId);
-					unitToUpdate.setName(EditUnitActivity.this.editTextUnitName.getText()
-							.toString());
-
-					EditUnitActivity.this.datasource.updateUnit(unitToUpdate);
-					EditUnitActivity.this.finish();
-
-				} else {
-					Toast.makeText(EditUnitActivity.this.context,
-							EditUnitActivity.this.getString(R.string.msg_unit_already_exists),
-							Toast.LENGTH_SHORT).show();
-				}
-			}
-		}
 	}
 }

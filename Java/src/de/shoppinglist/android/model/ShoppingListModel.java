@@ -7,6 +7,7 @@ import de.shoppinglist.android.bean.Shoppinglist;
 import de.shoppinglist.android.bean.ShoppinglistProductMapping;
 import de.shoppinglist.android.constant.GlobalValues;
 import de.shoppinglist.android.datasource.ShoppinglistDataSource;
+import de.shoppinglist.android.datasource.ShoppinglistPersistence;
 import android.app.Application;
 import android.content.Context;
 
@@ -17,8 +18,10 @@ public class ShoppingListModel{
 	
 	private List<ShoppinglistProductMapping> shoppingListItems;
 	private Shoppinglist currentShoppingList;
+	private ShoppinglistPersistence shoppingListPersistence;
 	
 	private ShoppingListModel(){
+		shoppingListPersistence = new ShoppinglistPersistence();
 		load();
 	}
 	
@@ -34,17 +37,19 @@ public class ShoppingListModel{
 	
 	public void moveShoppintListToHistory(){
 		ArrayList<ShoppinglistProductMapping> history = (ArrayList<ShoppinglistProductMapping>) shoppingListItems;
+		//shoppingListPersistence.update(currentShoppingList);
 		datasource.addAllToHistory();
 		restartShoppingList();
 	}
 	
 	
 	private void restartShoppingList (){
+		datasource.deleteAllShoppinglistProductMappings();
 		this.currentShoppingList.finish();
 		this.shoppingListItems = new ArrayList<ShoppinglistProductMapping>();
-		datasource.deleteAllShoppinglistProductMappings();
 		this.currentShoppingList = new Shoppinglist();
 		datasource.createNewShoppinglist();
+	//	shoppingListPersistence.add(currentShoppingList);
 	}
 	
 	private void load(){

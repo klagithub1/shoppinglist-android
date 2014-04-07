@@ -31,4 +31,13 @@ public class ShoppinglistDataSourceData {
 	public void setDbHelper(SQLiteHelper dbHelper) {
 		this.dbHelper = dbHelper;
 	}
+	
+	public void isDbLockedByThread() {
+		int counter = 0;
+		while (((this.database != null)
+				&& (this.database.isDbLockedByCurrentThread() || this.database
+						.isDbLockedByOtherThreads()) && (counter < 1000))) {
+			counter++;
+		}
+	}
 }

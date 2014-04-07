@@ -37,7 +37,15 @@ public class ShoppinglistDataSource {
 	public ShoppinglistDataSource(final Context context) {
 		this.dbHelper = new SQLiteHelper(context);
 	}
+	
+	public void addShoppingList(){
+		createNewShoppinglist();
+	}
 
+	public void updateShoppingList(){
+		this.addAllToHistory();
+	}
+	
 	/**
 	 * adds the current shoppinglist with all its relations to the table.history
 	 */
@@ -1511,7 +1519,7 @@ public class ShoppinglistDataSource {
 	 * </p>
 	 * 
 	 */
-	private void isDbLockedByThread() {
+	public void isDbLockedByThread() {
 		int counter = 0;
 		while (((this.database != null)
 				&& (this.database.isDbLockedByCurrentThread() || this.database

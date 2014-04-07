@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
+import de.shoppinglist.android.controller.ShoppingListController;
 import de.shoppinglist.android.datasource.ShoppinglistDataSource;
 
 /**
@@ -26,6 +27,8 @@ public abstract class AbstractShoppinglistActivity extends Activity {
 	private Context context;
 
 	private ShoppinglistDataSource datasource;
+	
+	private final ShoppingListController controller = (ShoppingListController) getApplicationContext();
 
 	@Override
 	public void finish() {
@@ -121,5 +124,9 @@ public abstract class AbstractShoppinglistActivity extends Activity {
 			}
 		}
 		return noEmptyEditText;
+	}
+
+	public ShoppingListController getController() {
+		return controller;
 	}
 }

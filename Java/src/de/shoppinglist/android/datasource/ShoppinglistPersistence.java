@@ -1,9 +1,18 @@
 package de.shoppinglist.android.datasource;
 
+import de.shoppinglist.android.bean.Shoppinglist;
 import de.shoppinglist.android.constant.DBConstants;
 
 public class ShoppinglistPersistence {
 	private ShoppinglistDataSourceData data = ShoppinglistDataSourceData.getInstance();
+	
+	public void add(Shoppinglist shoppingList, ShoppinglistDataSourceData sessionDB){
+		createNewShoppinglist();
+	}
+	
+	public void delete(Shoppinglist shoppingList, ShoppinglistDataSourceData sessionDB){
+		
+	}
 
 	public void createNewShoppinglist() {
 

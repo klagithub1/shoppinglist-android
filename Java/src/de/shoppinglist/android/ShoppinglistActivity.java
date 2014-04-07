@@ -27,7 +27,7 @@ import de.shoppinglist.android.bean.Store;
 import de.shoppinglist.android.constant.ConfigurationConstants;
 import de.shoppinglist.android.constant.DBConstants;
 import de.shoppinglist.android.constant.GlobalValues;
-import de.shoppinglist.android.controller.ShoppingListController;
+//import de.shoppinglist.android.model.ShoppingListModel;
 import de.shoppinglist.android.datasource.ShoppinglistDataSource;
 import de.shoppinglist.android.helper.ProcessColorHelper;
 
@@ -483,8 +483,7 @@ public class ShoppinglistActivity extends AbstractShoppinglistActivity {
 					new OnClickListener() {
 
 						public void onClick(final DialogInterface dialog, final int which) {
-							//moveShoppingListToHistory();
-							getController().moveShoppintListToHistory();
+							getModel().moveShoppintListToHistory();
 							refreshLayout();
 						}
 					});
@@ -499,12 +498,6 @@ public class ShoppinglistActivity extends AbstractShoppinglistActivity {
 
 			alertBox.show();
 		}
-	}
-	
-	private void moveShoppingListToHistory(){
-		datasource.addAllToHistory();
-		datasource.deleteAllShoppinglistProductMappings();
-		datasource.createNewShoppinglist();
 	}
 
 }

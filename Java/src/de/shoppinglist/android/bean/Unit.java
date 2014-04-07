@@ -1,6 +1,6 @@
 package de.shoppinglist.android.bean;
 
-public class Object extends BusinessBean {
+public class Unit extends BusinessBean {
 
 	private String name;
 

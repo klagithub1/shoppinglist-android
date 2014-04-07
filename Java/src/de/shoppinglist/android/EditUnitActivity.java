@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import de.shoppinglist.android.bean.Object;
+import de.shoppinglist.android.bean.Unit;
 import de.shoppinglist.android.constant.DBConstants;
 import de.shoppinglist.android.datasource.ShoppinglistDataSource;
 
@@ -61,12 +61,12 @@ public class EditUnitActivity extends AbstractShoppinglistActivity {
 				if (EditUnitActivity.super.setErrorOnEmptyEditTexts(editTextIds)) {
 
 					// check whether there is an unit with this name already
-					final Object alreadyExistingUnit = EditUnitActivity.this.datasource
+					final Unit alreadyExistingUnit = EditUnitActivity.this.datasource
 							.getUnitByName(EditUnitActivity.this.editTextUnitName.getText().toString());
 
 					if (alreadyExistingUnit == null) {
 
-						final Object unitToUpdate = new Object();
+						final Unit unitToUpdate = new Unit();
 						unitToUpdate.setId(selectedUnitId);
 						unitToUpdate.setName(EditUnitActivity.this.editTextUnitName.getText().toString());
 

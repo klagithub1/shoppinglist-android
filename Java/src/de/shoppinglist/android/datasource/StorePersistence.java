@@ -9,7 +9,7 @@ import de.shoppinglist.android.constant.DBConstants;
 import de.shoppinglist.android.constant.GlobalValues;
 import de.shoppinglist.android.helper.TranslateUmlauts;
 
-public class StorePersistence implements Persistence{
+public class StorePersistence{
 	private ShoppinglistDataSourceData data = ShoppinglistDataSourceData.getInstance();
 	private ProductPersistence productPersistence;
 
@@ -89,9 +89,9 @@ public class StorePersistence implements Persistence{
 
 	}
 	
-	public void delete(final Object storeId) {
+	public void delete(final int storeId) {
 		final String sqlQuery = "DELETE FROM " + DBConstants.TAB_STORE_NAME
-				+ " WHERE " + DBConstants.COL_STORE_ID + " = " + (Integer) storeId;
+				+ " WHERE " + DBConstants.COL_STORE_ID + " = " + storeId;
 
 		this.data.getDatabase().execSQL(sqlQuery);
 	}
@@ -266,8 +266,7 @@ public class StorePersistence implements Persistence{
 		this.data.getDatabase().execSQL(sqlQuery);
 	}
 	
-	public void update(Object o) {
-		final Store store = (Store) o;
+	public void update(Store store) {
 		final String sqlQuery = "UPDATE " + DBConstants.TAB_STORE_NAME
 				+ " SET " + DBConstants.COL_STORE_NAME + " = '"
 				+ store.getName().trim() + "' WHERE "

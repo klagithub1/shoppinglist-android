@@ -10,7 +10,7 @@ import de.shoppinglist.android.bean.Product;
 import de.shoppinglist.android.constant.DBConstants;
 import de.shoppinglist.android.helper.TranslateUmlauts;
 
-public class FavoritePersistence implements Persistence{
+public class FavoritePersistence{
 	private ShoppinglistDataSourceData data = ShoppinglistDataSourceData.getInstance();
 
 	public List<Favorite> getAllFavorites() {
@@ -78,8 +78,7 @@ public class FavoritePersistence implements Persistence{
 		this.data.getDatabase().execSQL(sqlQuery);
 	}
 	
-	public void update(Object o) {
-		final Favorite favorite = (Favorite) o;
+	public void update(Favorite favorite) {
 		final String sqlQuery = "UPDATE " + DBConstants.TAB_FAVORITE_NAME
 				+ " SET " + DBConstants.COL_FAVORITE_NAME + " = '"
 				+ favorite.getName().trim() + "' WHERE "
@@ -87,11 +86,6 @@ public class FavoritePersistence implements Persistence{
 				+ DBConstants.COL_FAVORITE_ID + " = " + favorite.getId();
 
 		this.data.getDatabase().execSQL(sqlQuery);
-	}
-
-	public void delete(Object object) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

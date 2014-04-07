@@ -50,7 +50,7 @@ import de.shoppinglist.android.adapter.GoogleDriveFileAdapter;
 import de.shoppinglist.android.bean.Product;
 import de.shoppinglist.android.bean.ShoppinglistProductMapping;
 import de.shoppinglist.android.bean.Store;
-import de.shoppinglist.android.bean.Object;
+import de.shoppinglist.android.bean.Unit;
 import de.shoppinglist.android.constant.GlobalValues;
 import de.shoppinglist.android.datasource.ShoppinglistDataSource;
 
@@ -298,7 +298,7 @@ public class DriveApiActivity extends AbstractShoppinglistActivity {
 									// must be added / saved to the db and
 									// which
 									// ones could only be updated.
-									Object unit = DriveApiActivity.this.datasource.getUnitByName(unitName);
+									Unit unit = DriveApiActivity.this.datasource.getUnitByName(unitName);
 									if (unit == null) {
 										DriveApiActivity.this.datasource.saveUnit(unitName);
 										unit = DriveApiActivity.this.datasource.getUnitByName(unitName);

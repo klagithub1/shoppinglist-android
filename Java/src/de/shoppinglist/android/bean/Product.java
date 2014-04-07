@@ -4,7 +4,7 @@ public class Product extends BusinessBean {
 
 	private String name;
 
-	private Object unit;
+	private Unit unit;
 
 	public String getName() {
 		return name;
@@ -14,11 +14,11 @@ public class Product extends BusinessBean {
 		this.name = name;
 	}
 
-	public Object getUnit() {
+	public Unit getUnit() {
 		return unit;
 	}
 
-	public void setUnit(Object unit) {
+	public void setUnit(Unit unit) {
 		this.unit = unit;
 	}
 }

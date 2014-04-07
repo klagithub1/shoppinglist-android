@@ -8,16 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.shoppinglist.android.R;
-import de.shoppinglist.android.bean.Object;
+import de.shoppinglist.android.bean.Unit;
 
-public class UnitAdapter extends ArrayAdapter<Object> {
+public class UnitAdapter extends ArrayAdapter<Unit> {
 
 	@SuppressWarnings("unused")
 	private final Context context;
 
-	private final List<Object> values;
+	private final List<Unit> values;
 
-	public UnitAdapter(final Context context, final List<Object> values) {
+	public UnitAdapter(final Context context, final List<Unit> values) {
 		super(context, R.layout.list_row, values);
 		this.context = context;
 		this.values = values;
@@ -27,7 +27,7 @@ public class UnitAdapter extends ArrayAdapter<Object> {
 	public View getView(final int position, final View convertView, final ViewGroup parent) {
 		final TextView textView = (TextView) super.getView(position, convertView, parent);
 
-		final Object unitToBeShown = this.values.get(position);
+		final Unit unitToBeShown = this.values.get(position);
 
 		textView.setText(unitToBeShown.toString());
 

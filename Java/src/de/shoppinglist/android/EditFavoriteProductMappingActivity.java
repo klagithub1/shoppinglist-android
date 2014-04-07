@@ -19,7 +19,7 @@ import de.shoppinglist.android.adapter.UnitAdapter;
 import de.shoppinglist.android.bean.FavoriteProductMapping;
 import de.shoppinglist.android.bean.Product;
 import de.shoppinglist.android.bean.Store;
-import de.shoppinglist.android.bean.Object;
+import de.shoppinglist.android.bean.Unit;
 import de.shoppinglist.android.constant.DBConstants;
 import de.shoppinglist.android.datasource.ShoppinglistDataSource;
 
@@ -52,11 +52,11 @@ public class EditFavoriteProductMappingActivity extends AbstractShoppinglistActi
 		final TextView titleView = (TextView) this.findViewById(R.id.titleEditOrAddProduct);
 		titleView.setText(R.string.title_edit_product);
 
-		final List<Object> units = this.datasource.getAllUnits();
+		final List<Unit> units = this.datasource.getAllUnits();
 		final List<Store> stores = this.datasource.getAllStores();
 
 		this.spinnerUnits = (Spinner) this.findViewById(R.id.spinnerUnitAddProduct);
-		final ArrayAdapter<Object> spinnerUnitAdapter = new UnitAdapter(this, units);
+		final ArrayAdapter<Unit> spinnerUnitAdapter = new UnitAdapter(this, units);
 		this.spinnerUnits.setAdapter(spinnerUnitAdapter);
 
 		this.spinnerStores = (Spinner) this.findViewById(R.id.spinnerStoreAddProduct);
@@ -77,7 +77,7 @@ public class EditFavoriteProductMappingActivity extends AbstractShoppinglistActi
 
 		// unit (Spinner)
 		final int clickedMappingUnitId = this.getIntent().getIntExtra(DBConstants.COL_UNIT_ID, -1);
-		for (final Object unit : units) {
+		for (final Unit unit : units) {
 			if (unit.getId() == clickedMappingUnitId) {
 				this.spinnerUnits.setSelection(spinnerUnitAdapter.getPosition(unit));
 			}
@@ -116,7 +116,7 @@ public class EditFavoriteProductMappingActivity extends AbstractShoppinglistActi
 					// neu anlegen
 					//
 					final String quantity = EditFavoriteProductMappingActivity.this.editTextQuantity.getText().toString();
-					final Object selectedUnit = (Object) EditFavoriteProductMappingActivity.this.spinnerUnits.getSelectedItem();
+					final Unit selectedUnit = (Unit) EditFavoriteProductMappingActivity.this.spinnerUnits.getSelectedItem();
 					final String productName = EditFavoriteProductMappingActivity.this.editTextProductName.getText().toString();
 					final Store selectedStore = (Store) EditFavoriteProductMappingActivity.this.spinnerStores.getSelectedItem();
 

@@ -19,7 +19,7 @@ import de.shoppinglist.android.adapter.UnitAdapter;
 import de.shoppinglist.android.bean.Product;
 import de.shoppinglist.android.bean.ShoppinglistProductMapping;
 import de.shoppinglist.android.bean.Store;
-import de.shoppinglist.android.bean.Object;
+import de.shoppinglist.android.bean.Unit;
 import de.shoppinglist.android.constant.GlobalValues;
 import de.shoppinglist.android.datasource.ShoppinglistDataSource;
 
@@ -52,11 +52,11 @@ public class AddProductActivity extends AbstractShoppinglistActivity {
 		final TextView titleView = (TextView) this.findViewById(R.id.titleEditOrAddProduct);
 		titleView.setText(R.string.title_add_new_product);
 
-		final List<Object> units = this.datasource.getAllUnits();
+		final List<Unit> units = this.datasource.getAllUnits();
 		final List<Store> stores = this.datasource.getAllStores();
 
 		this.spinnerUnits = (Spinner) this.findViewById(R.id.spinnerUnitAddProduct);
-		final ArrayAdapter<Object> spinnerUnitAdapter = new UnitAdapter(this, units);
+		final ArrayAdapter<Unit> spinnerUnitAdapter = new UnitAdapter(this, units);
 		this.spinnerUnits.setAdapter(spinnerUnitAdapter);
 
 		this.spinnerStores = (Spinner) this.findViewById(R.id.spinnerStoreAddProduct);
@@ -79,7 +79,7 @@ public class AddProductActivity extends AbstractShoppinglistActivity {
 		});
 		if (AddProductActivity.super.setErrorOnEmptyEditTexts(AddProductActivity.this.editTextIds)) {
 			final Store selectedStore = (Store) AddProductActivity.this.spinnerStores.getSelectedItem();
-			final Object selectedUnit = (Object) AddProductActivity.this.spinnerUnits.getSelectedItem();
+			final Unit selectedUnit = (Unit) AddProductActivity.this.spinnerUnits.getSelectedItem();
 			final String productName = AddProductActivity.this.editTextProductName.getText().toString();
 			final String quantity = AddProductActivity.this.editTextQuantity.getText().toString();
 

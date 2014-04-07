@@ -5,7 +5,7 @@ import de.shoppinglist.android.bean.Product;
 import de.shoppinglist.android.constant.DBConstants;
 import de.shoppinglist.android.helper.TranslateUmlauts;
 
-public class ProductPersistence implements Persistence{
+public class ProductPersistence{
 	private ShoppinglistDataSourceData data = ShoppinglistDataSourceData.getInstance();
 	
 	public boolean isProductNotInUse(final int productId) {
@@ -42,11 +42,11 @@ public class ProductPersistence implements Persistence{
 		return (isNotInShoppingListProductMappingInUse && isNotInFavoriteProductMappingInUse);
 	}
 	
-	public void delete(final Object productId) {
+	public void delete(final int productId) {
 		final String sqlDeleteProduct = "DELETE FROM "
 				+ DBConstants.TAB_PRODUCT_NAME + " WHERE "
 				+ DBConstants.TAB_PRODUCT_NAME + "."
-				+ DBConstants.COL_PRODUCT_ID + " = " + (Integer)productId;
+				+ DBConstants.COL_PRODUCT_ID + " = " + productId;
 
 		this.data.getDatabase().execSQL(sqlDeleteProduct);
 	}
@@ -88,8 +88,7 @@ public class ProductPersistence implements Persistence{
 		this.data.getDatabase().execSQL(sqlQuery);
 	}
 	
-	public void update(Object o) {
-		final Product product = (Product) o;
+	public void update(Product product) {
 		final String sqlQuery = "UPDATE " + DBConstants.TAB_PRODUCT_NAME
 				+ " SET " + DBConstants.COL_PRODUCT_NAME + " = '"
 				+ product.getName().trim() + "' , "
@@ -99,10 +98,5 @@ public class ProductPersistence implements Persistence{
 				+ DBConstants.COL_PRODUCT_ID + " = " + product.getId();
 
 		this.data.getDatabase().execSQL(sqlQuery);
-	}
-
-	public void save(String name) {
-		// TODO Auto-generated method stub
-		
 	}
 }

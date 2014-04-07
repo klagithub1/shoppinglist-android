@@ -19,7 +19,7 @@ import de.shoppinglist.android.adapter.UnitAdapter;
 import de.shoppinglist.android.bean.FavoriteProductMapping;
 import de.shoppinglist.android.bean.Product;
 import de.shoppinglist.android.bean.Store;
-import de.shoppinglist.android.bean.Object;
+import de.shoppinglist.android.bean.Unit;
 import de.shoppinglist.android.constant.DBConstants;
 import de.shoppinglist.android.datasource.ShoppinglistDataSource;
 
@@ -55,11 +55,11 @@ public class AddProductToFavoriteActivity extends AbstractShoppinglistActivity {
 		// get extra-values of intent
 		final int selectedFavoriteId = this.getIntent().getIntExtra(DBConstants.COL_FAVORITE_ID, -1);
 
-		final List<Object> units = super.getDatasource().getAllUnits();
+		final List<Unit> units = super.getDatasource().getAllUnits();
 		final List<Store> stores = super.getDatasource().getAllStores();
 
 		this.spinnerUnits = (Spinner) this.findViewById(R.id.spinnerUnitAddProduct);
-		final ArrayAdapter<Object> spinnerUnitAdapter = new UnitAdapter(this, units);
+		final ArrayAdapter<Unit> spinnerUnitAdapter = new UnitAdapter(this, units);
 		this.spinnerUnits.setAdapter(spinnerUnitAdapter);
 
 		this.spinnerStores = (Spinner) this.findViewById(R.id.spinnerStoreAddProduct);
@@ -79,7 +79,7 @@ public class AddProductToFavoriteActivity extends AbstractShoppinglistActivity {
 				if (AddProductToFavoriteActivity.super.setErrorOnEmptyEditTexts(editTextIds)) {
 
 					final Store selectedStore = (Store) AddProductToFavoriteActivity.this.spinnerStores.getSelectedItem();
-					final Object selectedUnit = (Object) AddProductToFavoriteActivity.this.spinnerUnits.getSelectedItem();
+					final Unit selectedUnit = (Unit) AddProductToFavoriteActivity.this.spinnerUnits.getSelectedItem();
 					final String productName = AddProductToFavoriteActivity.this.editTextProductName.getText().toString();
 					final String quantity = AddProductToFavoriteActivity.this.editTextQuantity.getText().toString();
 

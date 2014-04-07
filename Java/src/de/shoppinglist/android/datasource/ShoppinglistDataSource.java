@@ -14,7 +14,7 @@ import de.shoppinglist.android.bean.Product;
 import de.shoppinglist.android.bean.Shoppinglist;
 import de.shoppinglist.android.bean.ShoppinglistProductMapping;
 import de.shoppinglist.android.bean.Store;
-import de.shoppinglist.android.bean.Object;
+import de.shoppinglist.android.bean.Unit;
 import de.shoppinglist.android.constant.ConfigurationConstants;
 import de.shoppinglist.android.constant.DBConstants;
 import de.shoppinglist.android.constant.GlobalValues;
@@ -236,7 +236,7 @@ public class ShoppinglistDataSource {
 	public void deleteHistory() {
 		this.isDbLockedByThread();
 
-		historyPersistence.delete(null);
+		historyPersistence.delete();
 	}
 
 	/**
@@ -324,7 +324,7 @@ public class ShoppinglistDataSource {
 	 * 
 	 * @return List<Unit> units
 	 */
-	public List<Object> getAllUnits() {
+	public List<Unit> getAllUnits() {
 		this.isDbLockedByThread();
 
 		return unitPersistence.getAll();
@@ -472,7 +472,7 @@ public class ShoppinglistDataSource {
 	 * @param unitName
 	 * @return Unit unit
 	 */
-	public Object getUnitByName(String unitName) {
+	public Unit getUnitByName(String unitName) {
 		this.isDbLockedByThread();
 		return unitPersistence.getUnitByName(unitName);
 	}
@@ -693,7 +693,7 @@ public class ShoppinglistDataSource {
 	 * @param unit
 	 * 
 	 */
-	public void updateUnit(final Object unit) {
+	public void updateUnit(final Unit unit) {
 		this.isDbLockedByThread();
 		unitPersistence.update(unit);
 	}

@@ -17,13 +17,13 @@ import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.Toast;
 import de.shoppinglist.android.adapter.UnitAdapter;
-import de.shoppinglist.android.bean.Object;
+import de.shoppinglist.android.bean.Unit;
 import de.shoppinglist.android.constant.DBConstants;
 import de.shoppinglist.android.datasource.ShoppinglistDataSource;
 
 public class ManageUnitsActivity extends AbstractShoppinglistActivity {
 
-	private List<Object> allUnits;
+	private List<Unit> allUnits;
 
 	private Context context;
 
@@ -31,7 +31,7 @@ public class ManageUnitsActivity extends AbstractShoppinglistActivity {
 
 	private ListView listUnits;
 
-	private ArrayAdapter<Object> unitListAdapter;
+	private ArrayAdapter<Unit> unitListAdapter;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -65,7 +65,7 @@ public class ManageUnitsActivity extends AbstractShoppinglistActivity {
 						popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
 							public boolean onMenuItemClick(final MenuItem item) {
-								final Object selectedUnit = ManageUnitsActivity.this.unitListAdapter
+								final Unit selectedUnit = ManageUnitsActivity.this.unitListAdapter
 										.getItem(position);
 
 								switch (item.getItemId()) {

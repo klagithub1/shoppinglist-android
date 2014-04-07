@@ -9,7 +9,7 @@ import de.shoppinglist.android.bean.History;
 import de.shoppinglist.android.bean.Shoppinglist;
 import de.shoppinglist.android.constant.DBConstants;
 
-public class HistoryPersistence implements Persistence{
+public class HistoryPersistence{
 	private ShoppinglistDataSourceData data = ShoppinglistDataSourceData.getInstance();
 	private ShoppinglistProductMappingPersistence shoppinglistProductMappingPersistence;
 	public HistoryPersistence(
@@ -61,7 +61,7 @@ public class HistoryPersistence implements Persistence{
 		shoppinglistProductMappingPersistence.deleteAllShoppinglistProductMappings();
 	}
 	
-	public void delete(Object o) {
+	public void delete() {
 
 		final String sqlDeleteHistory = "DELETE FROM "
 				+ DBConstants.TAB_HISTORY_NAME;
@@ -142,15 +142,5 @@ public class HistoryPersistence implements Persistence{
 		cursor.close();
 
 		return shoppinglists;
-	}
-
-	public void save(String name) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void update(Object object) {
-		// TODO Auto-generated method stub
-		
 	}
 }

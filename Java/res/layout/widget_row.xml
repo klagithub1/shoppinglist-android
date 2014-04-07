@@ -8,9 +8,9 @@
         android:id="@+id/widgetRowCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:padding="5dip"
         android:contentDescription="@string/widget_image_checkbox_description"
-        android:gravity="center_vertical"
-        android:padding="5dip" >
+        android:gravity="center_vertical" >
     </ImageView>
 
     <ImageView
@@ -23,13 +23,12 @@
 
     <TextView
         android:id="@+id/widgetRowText"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="center_vertical"
+        android:maxLines="1"
         android:paddingLeft="@dimen/padding_all_elements"
-        android:singleLine="true"
-        android:textColor="@color/text_color"
-        android:textSize="13sp" >
+        android:textColor="@color/text_color" >
     </TextView>
 
 </LinearLayout>

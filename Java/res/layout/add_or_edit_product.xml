@@ -24,8 +24,7 @@
 
             <EditText
                 android:id="@+id/editTextQuantityAddProduct"
-                style="@style/Edit.Number"
-                android:inputType="number|phone" >
+                style="@style/Edit.Number" >
             </EditText>
         </TableRow>
 
@@ -49,11 +48,10 @@
                 android:text="@string/label_add_new_product_name" >
             </TextView>
 
-            <AutoCompleteTextView
-                android:id="@+id/editTextProductNameAutocomplete"
-                style="@style/Edit.Text"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/editTextNameAddProduct"
+                style="@style/Edit.Text" >
+            </EditText>
         </TableRow>
 
         <TableRow>

@@ -27,7 +27,8 @@ public class ShoppinglistWidgetService extends RemoteViewsService {
 
 	@Override
 	public RemoteViewsFactory onGetViewFactory(final Intent intent) {
-		return (new ShoppinglistViewsFactory(this.getApplicationContext(), intent));
+		return (new ShoppinglistViewsFactory(this.getApplicationContext(),
+				intent));
 	}
 
 }

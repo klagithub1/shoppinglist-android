@@ -9,13 +9,13 @@ public class TranslateUmlauts {
 
 	private static void fillMapWithUmlauts() {
 		TranslateUmlauts.umlautsWithTranslations = new HashMap<String, String>();
-		TranslateUmlauts.umlautsWithTranslations.put("ä", "&auml;");
-		TranslateUmlauts.umlautsWithTranslations.put("Ä", "&Auml;");
-		TranslateUmlauts.umlautsWithTranslations.put("ö", "&ouml;");
-		TranslateUmlauts.umlautsWithTranslations.put("Ö", "&Ouml;");
-		TranslateUmlauts.umlautsWithTranslations.put("ü", "&uuml;");
-		TranslateUmlauts.umlautsWithTranslations.put("Ü", "&Uuml;");
-		TranslateUmlauts.umlautsWithTranslations.put("ß", "&szlig;");
+//		TranslateUmlauts.umlautsWithTranslations.put("ï¿½, "&auml;");
+//		TranslateUmlauts.umlautsWithTranslations.put("ï¿½, "&Auml;");
+//		TranslateUmlauts.umlautsWithTranslations.put("ï¿½, "&ouml;");
+//		TranslateUmlauts.umlautsWithTranslations.put("ï¿½, "&Ouml;");
+//		TranslateUmlauts.umlautsWithTranslations.put("ï¿½, "&uuml;");
+//		TranslateUmlauts.umlautsWithTranslations.put("ï¿½, "&Uuml;");
+//		TranslateUmlauts.umlautsWithTranslations.put("ï¿½, "&szlig;");
 	}
 
 	/**
@@ -53,8 +53,8 @@ public class TranslateUmlauts {
 		TranslateUmlauts.fillMapWithUmlauts();
 
 		for (final String germanUmlaut : TranslateUmlauts.umlautsWithTranslations.keySet()) {
-			stringToReplaceUmlauts = stringToReplaceUmlauts.replace(
-					TranslateUmlauts.umlautsWithTranslations.get(germanUmlaut), germanUmlaut);
+			stringToReplaceUmlauts = stringToReplaceUmlauts.replace(TranslateUmlauts.umlautsWithTranslations.get(germanUmlaut),
+					germanUmlaut);
 		}
 		return stringToReplaceUmlauts;
 	}

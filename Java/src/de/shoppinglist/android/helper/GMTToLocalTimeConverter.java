@@ -10,6 +10,7 @@ public class GMTToLocalTimeConverter {
 		// get the offset to GMT from localTime, because the timestamp in DB is
 		// GMT +0:00
 		Calendar calendar = Calendar.getInstance();
+
 		TimeZone timeZone = calendar.getTimeZone();
 		int offset = timeZone.getRawOffset();
 		if (timeZone.inDaylightTime(new Date())) {

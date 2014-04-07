@@ -19,7 +19,7 @@ import de.shoppinglist.android.adapter.UnitAdapter;
 import de.shoppinglist.android.bean.Product;
 import de.shoppinglist.android.bean.ShoppinglistProductMapping;
 import de.shoppinglist.android.bean.Store;
-import de.shoppinglist.android.bean.Unit;
+import de.shoppinglist.android.bean.Object;
 import de.shoppinglist.android.constant.DBConstants;
 import de.shoppinglist.android.constant.GlobalValues;
 import de.shoppinglist.android.datasource.ShoppinglistDataSource;
@@ -30,8 +30,8 @@ public class EditProductActivity extends AbstractShoppinglistActivity {
 
 	private ShoppinglistDataSource datasource;
 
-	private final List<Integer> editTextIds = new LinkedList<Integer>(Arrays.asList(
-			R.id.editTextQuantityAddProduct, R.id.editTextProductNameAutocomplete));
+	private final List<Integer> editTextIds = new LinkedList<Integer>(Arrays.asList(R.id.editTextQuantityAddProduct,
+			R.id.editTextNameAddProduct));
 
 	private EditText editTextProductName;
 
@@ -53,25 +53,22 @@ public class EditProductActivity extends AbstractShoppinglistActivity {
 		final TextView titleView = (TextView) this.findViewById(R.id.titleEditOrAddProduct);
 		titleView.setText(R.string.title_edit_product);
 
-		final List<Unit> units = this.datasource.getAllUnits();
+		final List<Object> units = this.datasource.getAllUnits();
 		final List<Store> stores = this.datasource.getAllStores();
 
 		this.spinnerUnits = (Spinner) this.findViewById(R.id.spinnerUnitAddProduct);
-		final ArrayAdapter<Unit> spinnerUnitAdapter = new UnitAdapter(this, units);
+		final ArrayAdapter<Object> spinnerUnitAdapter = new UnitAdapter(this, units);
 		this.spinnerUnits.setAdapter(spinnerUnitAdapter);
 
 		this.spinnerStores = (Spinner) this.findViewById(R.id.spinnerStoreAddProduct);
 		final ArrayAdapter<Store> spinnerStoreAdapter = new StoreAdapter(this, stores);
 		this.spinnerStores.setAdapter(spinnerStoreAdapter);
 
-		this.editTextProductName = (EditText) this
-				.findViewById(R.id.editTextProductNameAutocomplete);
-		this.editTextProductName.addTextChangedListener(super
-				.getTextWatcher(R.id.editTextProductNameAutocomplete));
+		this.editTextProductName = (EditText) this.findViewById(R.id.editTextNameAddProduct);
+		this.editTextProductName.addTextChangedListener(super.getTextWatcher(R.id.editTextNameAddProduct));
 
 		this.editTextQuantity = (EditText) this.findViewById(R.id.editTextQuantityAddProduct);
-		this.editTextQuantity.addTextChangedListener(super
-				.getTextWatcher(R.id.editTextQuantityAddProduct));
+		this.editTextQuantity.addTextChangedListener(super.getTextWatcher(R.id.editTextQuantityAddProduct));
 
 		// set the values of the calling activity (clicked mapping)
 		// quantity (EditText)
@@ -81,22 +78,19 @@ public class EditProductActivity extends AbstractShoppinglistActivity {
 
 		// unit (Spinner)
 		final int clickedMappingUnitId = this.getIntent().getIntExtra(DBConstants.COL_UNIT_ID, -1);
-		for (final Unit unit : units) {
+		for (final Object unit : units) {
 			if (unit.getId() == clickedMappingUnitId) {
 				this.spinnerUnits.setSelection(spinnerUnitAdapter.getPosition(unit));
 			}
 		}
 
 		// productName and Id (EditText)
-		final String clickedMappingProductName = this.getIntent().getStringExtra(
-				DBConstants.COL_PRODUCT_NAME);
-		final int clickedMappingProductId = this.getIntent().getIntExtra(
-				DBConstants.COL_PRODUCT_ID, -1);
+		final String clickedMappingProductName = this.getIntent().getStringExtra(DBConstants.COL_PRODUCT_NAME);
+		final int clickedMappingProductId = this.getIntent().getIntExtra(DBConstants.COL_PRODUCT_ID, -1);
 		this.editTextProductName.setText(clickedMappingProductName);
 
 		// Store (Spinner)
-		final int clickedMappingStoreId = this.getIntent()
-				.getIntExtra(DBConstants.COL_STORE_ID, -1);
+		final int clickedMappingStoreId = this.getIntent().getIntExtra(DBConstants.COL_STORE_ID, -1);
 
 		for (final Store store : stores) {
 			if (store.getId() == clickedMappingStoreId) {
@@ -105,29 +99,23 @@ public class EditProductActivity extends AbstractShoppinglistActivity {
 		}
 
 		// ShoppinglistProductMappingId
-		final int clickedMappingId = this.getIntent().getIntExtra(
-				DBConstants.COL_SHOPPINGLIST_PRODUCT_MAPPING_ID, -1);
+		final int clickedMappingId = this.getIntent().getIntExtra(DBConstants.COL_SHOPPINGLIST_PRODUCT_MAPPING_ID, -1);
 
 		this.buttonConfirmEditProduct = (Button) this.findViewById(R.id.buttonConfirmAddProduct);
 		this.buttonConfirmEditProduct.setText(R.string.button_text_save);
 		this.buttonConfirmEditProduct.setOnClickListener(new OnClickListener() {
 
 			public void onClick(final View v) {
-				if (EditProductActivity.super
-						.setErrorOnEmptyEditTexts(EditProductActivity.this.editTextIds)) {
+				if (EditProductActivity.super.setErrorOnEmptyEditTexts(EditProductActivity.this.editTextIds)) {
 
-					// prüfen, ob Produkt in Benutzung, wenn nicht updaten,
+					// pré»¤en, ob Produkt in Benutzung, wenn nicht updaten,
 					// sonst
 					// neu anlegen
 					//
-					final String quantity = EditProductActivity.this.editTextQuantity.getText()
-							.toString();
-					final Unit selectedUnit = (Unit) EditProductActivity.this.spinnerUnits
-							.getSelectedItem();
-					final String productName = EditProductActivity.this.editTextProductName
-							.getText().toString();
-					final Store selectedStore = (Store) EditProductActivity.this.spinnerStores
-							.getSelectedItem();
+					final String quantity = EditProductActivity.this.editTextQuantity.getText().toString();
+					final Object selectedUnit = (Object) EditProductActivity.this.spinnerUnits.getSelectedItem();
+					final String productName = EditProductActivity.this.editTextProductName.getText().toString();
+					final Store selectedStore = (Store) EditProductActivity.this.spinnerStores.getSelectedItem();
 
 					if (!clickedMappingProductName.equals(productName)
 							|| (clickedMappingUnitId != selectedUnit.getId())) {
@@ -136,17 +124,14 @@ public class EditProductActivity extends AbstractShoppinglistActivity {
 						// exist
 
 						// delete old mapping
-						EditProductActivity.this.datasource
-								.deleteShoppinglistProductMapping(clickedMappingId);
+						EditProductActivity.this.datasource.deleteShoppinglistProductMapping(clickedMappingId);
 
 						final Product alreadyExistingProduct = EditProductActivity.this.datasource
 								.getProductByNameAndUnit(productName, selectedUnit.getId());
 
 						// delete "old" product, when it's not in use
-						if (EditProductActivity.this.datasource
-								.checkWhetherProductIsNotInUse(clickedMappingProductId)) {
-							EditProductActivity.this.datasource
-									.deleteProduct(clickedMappingProductId);
+						if (EditProductActivity.this.datasource.isProductNotInUse(clickedMappingProductId)) {
+							EditProductActivity.this.datasource.deleteProduct(clickedMappingProductId);
 						}
 
 						if (alreadyExistingProduct != null) {
@@ -155,40 +140,35 @@ public class EditProductActivity extends AbstractShoppinglistActivity {
 							// for this product
 
 							final ShoppinglistProductMapping alreadyExistingMapping = EditProductActivity.this.datasource
-									.checkWhetherShoppinglistProductMappingExists(
-											selectedStore.getId(), alreadyExistingProduct.getId());
+									.doesShoppinglistProductMappingExist(selectedStore.getId(),
+											alreadyExistingProduct.getId());
 
 							if (alreadyExistingMapping != null) {
 								// already existing mapping - update quantity
-								final double newQuantity = Double.valueOf(alreadyExistingMapping
-										.getQuantity()) + Double.valueOf(quantity);
-								EditProductActivity.this.datasource
-										.updateShoppinglistProductMapping(
-												alreadyExistingMapping.getId(),
-												alreadyExistingMapping.getStore().getId(),
-												alreadyExistingProduct.getId(),
-												String.valueOf(newQuantity));
+								final double newQuantity = Double.valueOf(alreadyExistingMapping.getQuantity())
+										+ Double.valueOf(quantity);
+								EditProductActivity.this.datasource.updateShoppinglistProductMapping(
+										alreadyExistingMapping.getId(), alreadyExistingMapping.getStore().getId(),
+										alreadyExistingProduct.getId(), String.valueOf(newQuantity));
 
 							} else {
 								// already existing mapping NOT exist - insert
 								// new
 								// mapping
 								EditProductActivity.this.datasource.saveShoppingListProductMapping(
-										selectedStore.getId(), alreadyExistingProduct.getId(),
-										quantity, GlobalValues.NO);
+										selectedStore.getId(), alreadyExistingProduct.getId(), quantity,
+										GlobalValues.NO);
 
 							}
 
 						} else {
 							// new Product not exist
-							EditProductActivity.this.datasource.saveProduct(productName,
-									selectedUnit.getId());
-							final Product newProduct = EditProductActivity.this.datasource
-									.getProductByNameAndUnit(productName, selectedUnit.getId());
+							EditProductActivity.this.datasource.saveProduct(productName, selectedUnit.getId());
+							final Product newProduct = EditProductActivity.this.datasource.getProductByNameAndUnit(
+									productName, selectedUnit.getId());
 
-							EditProductActivity.this.datasource.saveShoppingListProductMapping(
-									selectedStore.getId(), newProduct.getId(), quantity,
-									GlobalValues.NO);
+							EditProductActivity.this.datasource.saveShoppingListProductMapping(selectedStore.getId(),
+									newProduct.getId(), quantity, GlobalValues.NO);
 
 						}
 
@@ -196,37 +176,31 @@ public class EditProductActivity extends AbstractShoppinglistActivity {
 						// product has not changed - check whether there is an
 						// existing mapping (pro_id + sto_id)
 						final ShoppinglistProductMapping alreadyExistingMapping = EditProductActivity.this.datasource
-								.checkWhetherShoppinglistProductMappingExists(
-										selectedStore.getId(), clickedMappingProductId);
+								.doesShoppinglistProductMappingExist(selectedStore.getId(),
+										clickedMappingProductId);
 
 						if (alreadyExistingMapping != null) {
 							// already existing mapping - update quantity
-							// (old + new)´
-
+							// (old + new)ï¿½
 							if (clickedMappingStoreId != alreadyExistingMapping.getStore().getId()) {
 								// delete old mapping
-								EditProductActivity.this.datasource
-										.deleteShoppinglistProductMapping(clickedMappingId);
+								EditProductActivity.this.datasource.deleteShoppinglistProductMapping(clickedMappingId);
 
 							}
 
 							alreadyExistingMapping.setQuantity(quantity);
-							final double newQuantity = Double.valueOf(alreadyExistingMapping
-									.getQuantity());
+							final double newQuantity = Double.valueOf(alreadyExistingMapping.getQuantity());
 							EditProductActivity.this.datasource.updateShoppinglistProductMapping(
-									alreadyExistingMapping.getId(), alreadyExistingMapping
-											.getStore().getId(), clickedMappingProductId, String
-											.valueOf(newQuantity));
+									alreadyExistingMapping.getId(), alreadyExistingMapping.getStore().getId(),
+									clickedMappingProductId, String.valueOf(newQuantity));
 
 						} else {
 							// already existing mapping NOT exist - insert new
 							// mapping and delete old mapping
-							EditProductActivity.this.datasource
-									.deleteShoppinglistProductMapping(clickedMappingId);
+							EditProductActivity.this.datasource.deleteShoppinglistProductMapping(clickedMappingId);
 
-							EditProductActivity.this.datasource.saveShoppingListProductMapping(
-									selectedStore.getId(), clickedMappingProductId, quantity,
-									GlobalValues.NO);
+							EditProductActivity.this.datasource.saveShoppingListProductMapping(selectedStore.getId(),
+									clickedMappingProductId, quantity, GlobalValues.NO);
 						}
 					}
 

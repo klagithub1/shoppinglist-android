@@ -54,7 +54,6 @@ public class ShoppinglistProductMapping extends BusinessBean {
 
 	@Override
 	public String toString() {
-		return this.quantity + " " + this.product.getUnit().getName() + " "
-				+ this.product.getName();
+		return this.quantity + " " + this.product.getUnit().getName() + " " + this.product.getName();
 	}
 }

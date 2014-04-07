@@ -7,6 +7,7 @@ import android.content.Context;
  * Holds the datasource, for connection pooling. (widget)
  * </p>
  * 
+ 
  */
 
 public class ShoppinglistDataSourceModel {

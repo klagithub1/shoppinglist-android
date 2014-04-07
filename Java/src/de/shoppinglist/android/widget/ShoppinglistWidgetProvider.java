@@ -22,15 +22,15 @@ import de.shoppinglist.android.datasource.ShoppinglistDataSourceModel;
 
 public class ShoppinglistWidgetProvider extends AppWidgetProvider {
 
-	public static String CLICK_ROW = "de.shoppinglist.android.widget.CLICK_ROW";
+	public static String CLICK_ROW = "de.g18.limepr.widget.CLICK_ROW";
 
-	public static String CLICKED_ROW_SHOPPINGLISTPRODUCTMAPPING_CHECKED = "de.shoppinglist.android.widget.CLICKED_ROW_SHOPPINGLISTPRODUCTMAPPING_CHECKED";
+	public static String CLICKED_ROW_SHOPPINGLISTPRODUCTMAPPING_CHECKED = "de.g18.limepr.widget.CLICKED_ROW_SHOPPINGLISTPRODUCTMAPPING_CHECKED";
 
-	public static String CLICKED_ROW_SHOPPINGLISTPRODUCTMAPPING_ID = "de.shoppinglist.android.widget.CLICKED_ROW_SHOPPINGLISTPRODUCTMAPPING_ID";
+	public static String CLICKED_ROW_SHOPPINGLISTPRODUCTMAPPING_ID = "de.g18.limepr.widget.CLICKED_ROW_SHOPPINGLISTPRODUCTMAPPING_ID";
 
-	public static String CLICKED_WIDGET_ID = "de.shoppinglist.android.widget.CLICKED_WIDGET_ID";
+	public static String CLICKED_WIDGET_ID = "de.g18.limepr.widget.CLICKED_WIDGET_ID";
 
-	public static String UPDATE_DATA = "de.shoppinglist.android.widget.UPDATE_DATA";
+	public static String UPDATE_DATA = "de.g18.limepr.widget.UPDATE_DATA";
 
 	/** {@inheritDoc} **/
 	@Override
@@ -58,30 +58,26 @@ public class ShoppinglistWidgetProvider extends AppWidgetProvider {
 
 	/** {@inheritDoc} **/
 	@Override
-	public void onUpdate(final Context context, final AppWidgetManager appWidgetManager,
-			final int[] appWidgetIds) {
+	public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
 
 		for (final int appWidgetId : appWidgetIds) {
-			appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId,
-					R.id.widgetListShoppinglistProductMappingsAlphabetically);
+			appWidgetManager
+					.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widgetListShoppinglistProductMappingsAlphabetically);
 
 			final Intent svcIntent = new Intent(context, ShoppinglistWidgetService.class);
 
 			svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 			svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
-			final RemoteViews widget = new RemoteViews(context.getPackageName(),
-					R.layout.widget_layout);
+			final RemoteViews widget = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
 			// call the service and fill the listView
-			widget.setRemoteAdapter(appWidgetId,
-					R.id.widgetListShoppinglistProductMappingsAlphabetically, svcIntent);
+			widget.setRemoteAdapter(appWidgetId, R.id.widgetListShoppinglistProductMappingsAlphabetically, svcIntent);
 
 			final Intent clickIntent = new Intent(ShoppinglistWidgetProvider.CLICK_ROW);
 			final PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, clickIntent,
 					PendingIntent.FLAG_UPDATE_CURRENT);
-			widget.setPendingIntentTemplate(
-					R.id.widgetListShoppinglistProductMappingsAlphabetically, pendingIntent);
+			widget.setPendingIntentTemplate(R.id.widgetListShoppinglistProductMappingsAlphabetically, pendingIntent);
 
 			appWidgetManager.updateAppWidget(appWidgetId, widget);
 		}

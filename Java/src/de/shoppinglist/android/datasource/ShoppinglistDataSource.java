@@ -20,6 +20,9 @@ import de.shoppinglist.android.bean.Unit;
 import de.shoppinglist.android.constant.ConfigurationConstants;
 import de.shoppinglist.android.constant.DBConstants;
 import de.shoppinglist.android.constant.GlobalValues;
+import de.shoppinglist.android.factory.AbstractListFactory;
+import de.shoppinglist.android.factory.FavoriteProductMappingsFactory;
+import de.shoppinglist.android.factory.ShoppinglistProductMappingFactory;
 import de.shoppinglist.android.helper.SQLiteHelper;
 import de.shoppinglist.android.helper.TranslateUmlauts;
 
@@ -28,6 +31,8 @@ public class ShoppinglistDataSource {
 	private SQLiteDatabase database;
 
 	private final SQLiteHelper dbHelper;
+	
+	AbstractListFactory factory;
 
 	/**
 	 * Constructor
@@ -104,10 +109,15 @@ public class ShoppinglistDataSource {
 
 		final Cursor cursor = this.database.rawQuery(sqlQuery, null);
 
+		
+		
 		FavoriteProductMapping favoriteProductMapping = null;
 
-		while ((cursor.getCount() != 0) && cursor.moveToNext()) {
-			favoriteProductMapping = new FavoriteProductMapping();
+		while ((cursor.getCount() != 0) && cursor.moveToNext())
+		{
+			factory = new FavoriteProductMappingsFactory();
+			favoriteProductMapping  = factory.createFavoriteProductMapping();
+			//favoriteProductMapping = new FavoriteProductMapping();
 
 			final Store store = new Store();
 			store.setId(cursor.getInt(cursor
@@ -128,9 +138,11 @@ public class ShoppinglistDataSource {
 					.getColumnIndex(DBConstants.COL_FAVORITE_PRODUCT_MAPPING_QUANTITY)));
 			favoriteProductMapping.setId(cursor.getInt(cursor
 					.getColumnIndex(DBConstants.COL_FAVORITE_PRODUCT_MAPPING_ID)));
+			
 
 		}
 		cursor.close();
+		
 		return favoriteProductMapping;
 	}
 
@@ -198,9 +210,13 @@ public class ShoppinglistDataSource {
 
 		ShoppinglistProductMapping shoppinglistProductMapping = null;
 
-		while ((cursor.getCount() != 0) && cursor.moveToNext()) {
-			shoppinglistProductMapping = new ShoppinglistProductMapping();
-
+		while ((cursor.getCount() != 0) && cursor.moveToNext()) 
+		{
+			
+			//shoppinglistProductMapping = new ShoppinglistProductMapping();
+			factory = new ShoppinglistProductMappingFactory();
+			shoppinglistProductMapping = factory.createShoppinglistProductMapping();
+			
 			final Store store = new Store();
 			store.setId(cursor.getInt(cursor
 					.getColumnIndex(DBConstants.COL_SHOPPINGLIST_PRODUCT_MAPPING_STORE_ID)));
@@ -770,7 +786,11 @@ public class ShoppinglistDataSource {
 		final List<FavoriteProductMapping> favoriteProductMappings = new LinkedList<FavoriteProductMapping>();
 		while (cursor.moveToNext()) {
 
-			final FavoriteProductMapping favoriteProductMapping = new FavoriteProductMapping();
+			factory = new FavoriteProductMappingsFactory();
+			//final FavoriteProductMapping favoriteProductMapping = new FavoriteProductMapping();
+			final FavoriteProductMapping favoriteProductMapping = factory.createFavoriteProductMapping();
+			
+			
 
 			final Favorite favorite = new Favorite();
 			favorite.setId(cursor.getInt(cursor.getColumnIndex(DBConstants.COL_FAVORITE_ID)));
@@ -959,7 +979,8 @@ public class ShoppinglistDataSource {
 	 * @param storeId
 	 * @return List<ShoppinglistProductMapping>
 	 */
-	public List<ShoppinglistProductMapping> getProductsOnShoppingList(final int storeId) {
+	public List<ShoppinglistProductMapping> getProductsOnShoppingList(final int storeId) 
+	{
 		this.isDbLockedByThread();
 
 		String sqlQuery = "SELECT * FROM " + DBConstants.TAB_SHOPPINGLIST_PRODUCT_MAPPING_NAME
@@ -990,7 +1011,9 @@ public class ShoppinglistDataSource {
 		final List<ShoppinglistProductMapping> shoppinglistProductMappings = new LinkedList<ShoppinglistProductMapping>();
 		while (cursor.moveToNext()) {
 
-			final ShoppinglistProductMapping shoppinglistProductMapping = new ShoppinglistProductMapping();
+			factory = new ShoppinglistProductMappingFactory();
+			//final ShoppinglistProductMapping shoppinglistProductMapping = new ShoppinglistProductMapping();
+			final ShoppinglistProductMapping shoppinglistProductMapping = factory.createShoppinglistProductMapping();
 
 			final Shoppinglist shoppinglist = new Shoppinglist();
 			shoppinglist

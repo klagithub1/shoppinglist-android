@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.database.Cursor;
-import de.shoppinglist.android.bean.Object;
+import de.shoppinglist.android.bean.Unit;
 import de.shoppinglist.android.constant.DBConstants;
 import de.shoppinglist.android.helper.TranslateUmlauts;
 
@@ -35,7 +35,7 @@ public class UnitPersistence implements Persistence{
 		this.data.getDatabase().execSQL(sqlQuery);
 	}
 	
-	public List<Object> getAll() {
+	public List<Unit> getAll() {
 		final String sqlQuery = "SELECT " + DBConstants.COL_UNIT_ID + ", "
 				+ DBConstants.COL_UNIT_NAME + " FROM "
 				+ DBConstants.TAB_UNIT_NAME + " ORDER BY "
@@ -43,10 +43,10 @@ public class UnitPersistence implements Persistence{
 
 		final Cursor cursor = this.data.getDatabase().rawQuery(sqlQuery, null);
 
-		final List<Object> units = new LinkedList<Object>();
+		final List<Unit> units = new LinkedList<Unit>();
 
 		while (cursor.moveToNext()) {
-			final Object unit = new Object();
+			final Unit unit = new Unit();
 			unit.setId(cursor.getInt(cursor
 					.getColumnIndex(DBConstants.COL_UNIT_ID)));
 			unit.setName(TranslateUmlauts.translateIntoGermanUmlauts(cursor
@@ -69,11 +69,11 @@ public class UnitPersistence implements Persistence{
 
 		final Cursor cursor = this.data.getDatabase().rawQuery(sqlQuery, null);
 
-		Object unit = null;
+		Unit unit = null;
 
 		if (cursor.getCount() == 1) {
 			cursor.moveToNext();
-			unit = new Object();
+			unit = new Unit();
 			unit.setId(cursor.getInt(cursor
 					.getColumnIndex(DBConstants.COL_UNIT_ID)));
 			unit.setName(TranslateUmlauts.translateIntoGermanUmlauts(cursor
@@ -95,7 +95,7 @@ public class UnitPersistence implements Persistence{
 	}
 	
 	public void update(Object o) {
-		final Object unit = (Object)o;
+		final Unit unit = (Unit)o;
 		final String sqlQuery = "UPDATE " + DBConstants.TAB_UNIT_NAME + " SET "
 				+ DBConstants.COL_UNIT_NAME + " = '" + unit.getName().trim()
 				+ "' WHERE " + DBConstants.TAB_UNIT_NAME + "."
@@ -109,8 +109,4 @@ public class UnitPersistence implements Persistence{
 		
 	}
 
-	public void update(java.lang.Object object) {
-		// TODO Auto-generated method stub
-		
-	}
 }

@@ -8,7 +8,7 @@ import de.shoppinglist.android.bean.Favorite;
 import de.shoppinglist.android.bean.FavoriteProductMapping;
 import de.shoppinglist.android.bean.Product;
 import de.shoppinglist.android.bean.Store;
-import de.shoppinglist.android.bean.Object;
+import de.shoppinglist.android.bean.Unit;
 import de.shoppinglist.android.constant.DBConstants;
 import de.shoppinglist.android.helper.TranslateUmlauts;
 
@@ -198,7 +198,7 @@ public class FavoriteProductMappingPersistence {
 					.getString(cursor
 							.getColumnIndex(DBConstants.COL_FAVORITE_NAME))));
 
-			final Object unit = new Object();
+			final Unit unit = new Unit();
 			unit.setId(cursor.getInt(cursor
 					.getColumnIndex(DBConstants.COL_UNIT_ID)));
 			unit.setName(TranslateUmlauts.translateIntoGermanUmlauts(cursor

@@ -252,25 +252,18 @@ public class FavoriteProductMappingPersistence {
 		this.data.getDatabase().execSQL(sqlQuery);
 	}
 	
-	public void updateFavoriteProductMapping(FavoriteProductMapping favoriteProductMapping) {
-		updateFavoriteProductMapping(favoriteProductMapping, favoriteProductMapping.getProduct().getId());
-	}
-	public void updateFavoriteProductMapping(FavoriteProductMapping favoriteProductMapping, int ProductId){
-		final int favoriteProductMappingId = favoriteProductMapping.getId();
-		final int storeId = favoriteProductMapping.getStore().getId();
-		final String quantity = favoriteProductMapping.getQuantity();
-				
-		final String sqlQuery = "UPDATE "
-				+ DBConstants.TAB_FAVORITE_PRODUCT_MAPPING_NAME + " SET "
-				+ DBConstants.COL_FAVORITE_PRODUCT_MAPPING_STORE_ID + " = "
-				+ storeId + ", "
-				+ DBConstants.COL_FAVORITE_PRODUCT_MAPPING_PRODUCT_ID + " = "
-				+ ProductId + ", "
-				+ DBConstants.COL_FAVORITE_PRODUCT_MAPPING_QUANTITY + " = "
-				+ quantity + " WHERE "
-				+ DBConstants.COL_FAVORITE_PRODUCT_MAPPING_ID + " = "
-				+ favoriteProductMappingId;
+//	public void updateFavoriteProductMapping(FavoriteProductMapping favoriteProductMapping) {
+//		updateFavoriteProductMapping(favoriteProductMapping, favoriteProductMapping.getProduct().getId());
+//	}
+	public void updateFavoriteProductMapping(final int favoriteProductMappingId, final int storeId,
+			final int productId, final String quantity) {
 
-		this.data.getDatabase().execSQL(sqlQuery);
+		final String sqlQuery = "UPDATE " + DBConstants.TAB_FAVORITE_PRODUCT_MAPPING_NAME + " SET "
+				+ DBConstants.COL_FAVORITE_PRODUCT_MAPPING_STORE_ID + " = " + storeId + ", "
+				+ DBConstants.COL_FAVORITE_PRODUCT_MAPPING_PRODUCT_ID + " = " + productId + ", "
+				+ DBConstants.COL_FAVORITE_PRODUCT_MAPPING_QUANTITY + " = " + quantity + " WHERE "
+				+ DBConstants.COL_FAVORITE_PRODUCT_MAPPING_ID + " = " + favoriteProductMappingId;
+
+		data.getDatabase().execSQL(sqlQuery);
 	}
 }

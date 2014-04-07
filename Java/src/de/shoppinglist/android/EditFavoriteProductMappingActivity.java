@@ -152,9 +152,9 @@ public class EditFavoriteProductMappingActivity extends AbstractShoppinglistActi
 								// (old + new)
 								final double newQuantity = Double.valueOf(alreadyExistingMapping.getQuantity())
 										+ Double.valueOf(quantity);
-								final FavoriteProductMapping newFavoriteProductMapping = new FavoriteProductMapping(alreadyExistingMapping.getFavorite(),
-										alreadyExistingMapping.getStore(),alreadyExistingProduct,String.valueOf(newQuantity));
-								EditFavoriteProductMappingActivity.this.datasource.updateFavoriteProductMapping(newFavoriteProductMapping);
+								EditFavoriteProductMappingActivity.this.datasource.updateFavoriteProductMapping(
+										alreadyExistingMapping.getId(), alreadyExistingMapping.getStore().getId(),
+										alreadyExistingProduct.getId(), String.valueOf(newQuantity));
 
 							} else {
 								// already existing mapping NOT exist -
@@ -195,10 +195,9 @@ public class EditFavoriteProductMappingActivity extends AbstractShoppinglistActi
 
 							final double newQuantity = Double.valueOf(alreadyExistingMapping.getQuantity())
 									+ Double.valueOf(quantity);
-							final FavoriteProductMapping newFavoriteProductMapping = new FavoriteProductMapping(alreadyExistingMapping.getFavorite(),
-									alreadyExistingMapping.getStore(),alreadyExistingMapping.getProduct(),String.valueOf(newQuantity));
-							EditFavoriteProductMappingActivity.this.datasource.updateFavoriteProductMapping(newFavoriteProductMapping,
-									clickedMappingProductId);
+							EditFavoriteProductMappingActivity.this.datasource.updateFavoriteProductMapping(
+									alreadyExistingMapping.getId(), alreadyExistingMapping.getStore().getId(),
+									clickedMappingProductId, String.valueOf(newQuantity));
 
 						} else {
 							// already existing mapping NOT exist - insert

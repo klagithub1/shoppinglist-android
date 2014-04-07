@@ -10,16 +10,6 @@ public class FavoriteProductMapping extends BusinessBean {
 
 	private String quantity;
 	
-	public FavoriteProductMapping(){super();}
-	public FavoriteProductMapping(Favorite favorite, Store store,
-			Product product, String quantity) {
-		super();
-		this.favorite = favorite;
-		this.store = store;
-		this.product = product;
-		this.quantity = quantity;
-	}
-
 	public Favorite getFavorite() {
 		return favorite;
 	}

@@ -21,11 +21,11 @@ public class ShoppinglistProductMappingPersistence {
 	private StorePersistence storePersistence;
 
 	public ShoppinglistProductMappingPersistence(
-			ShoppinglistPersistence shoppinglistPersistance,
-			ProductPersistence productPersistance,
+			ShoppinglistPersistence shoppinglistPersistence,
+			ProductPersistence productPersistence,
 			StorePersistence storePersistence) {
-		this.shoppinglistPersistence = shoppinglistPersistance;
-		this.productPersistence = productPersistance;
+		this.shoppinglistPersistence = shoppinglistPersistence;
+		this.productPersistence = productPersistence;
 		this.storePersistence = storePersistence;
 	}
 

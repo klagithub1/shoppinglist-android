@@ -98,9 +98,14 @@ public class AddProductToFavoriteActivity extends AbstractShoppinglistActivity {
 						// JA: update quantity
 						final double quantityToUpdate = Double.valueOf(alreadyExistingMapping.getQuantity())
 								+ Double.valueOf(quantity);
-						FavoriteProductMapping newFavoriteProductMapping = new FavoriteProductMapping(alreadyExistingMapping.getFavorite(),
-								alreadyExistingMapping.getStore(),alreadyExistingMapping.getProduct(),String.valueOf(quantityToUpdate));
-						AddProductToFavoriteActivity.this.datasource.updateFavoriteProductMapping(newFavoriteProductMapping);
+//						AddProductToFavoriteActivity.this.datasource.updateFavoriteProductMapping(
+//								new FavoriteProductMapping(alreadyExistingMapping.getStore(),
+//										alreadyExistingMapping.getProduct(),
+//										String.valueOf(quantityToUpdate)
+//								));				
+						AddProductToFavoriteActivity.this.datasource.updateFavoriteProductMapping(alreadyExistingMapping.getId(),
+								alreadyExistingMapping.getStore().getId(), alreadyExistingMapping.getProduct().getId(),
+								String.valueOf(quantityToUpdate));
 					} else {
 						// NEIN: insert new / save
 						AddProductToFavoriteActivity.this.datasource.saveFavoriteProductMapping(selectedFavoriteId,

@@ -73,40 +73,38 @@ public class AddProductActivity extends AbstractShoppinglistActivity {
 		this.buttonConfirmAddProduct.setOnClickListener(new OnClickListener() {
 
 			public void onClick(final View v) {
-				
+				if (AddProductActivity.super.setErrorOnEmptyEditTexts(AddProductActivity.this.editTextIds)) {
+					final Store selectedStore = (Store) AddProductActivity.this.spinnerStores.getSelectedItem();
+					final Unit selectedUnit = (Unit) AddProductActivity.this.spinnerUnits.getSelectedItem();
+					final String productName = AddProductActivity.this.editTextProductName.getText().toString();
+					final String quantity = AddProductActivity.this.editTextQuantity.getText().toString();
+
+					Product product = AddProductActivity.this.datasource.getProductByNameAndUnit(productName,
+							selectedUnit.getId());
+					if (product == null) {
+						AddProductActivity.this.datasource.saveProduct(productName, selectedUnit.getId());
+						product = AddProductActivity.this.datasource.getProductByNameAndUnit(productName, selectedUnit.getId());
+					}
+
+					final ShoppinglistProductMapping alreadyExistingMapping = AddProductActivity.this.datasource
+							.doesShoppinglistProductMappingExist(selectedStore.getId(), product.getId());
+					if (alreadyExistingMapping != null) {
+						// JA: update quantity
+						final double quantityToUpdate = Double.valueOf(alreadyExistingMapping.getQuantity())
+								+ Double.valueOf(quantity);
+						AddProductActivity.this.datasource.updateShoppinglistProductMapping(alreadyExistingMapping.getId(),
+								alreadyExistingMapping.getStore().getId(), alreadyExistingMapping.getProduct().getId(),
+								String.valueOf(quantityToUpdate));
+					} else {
+						// NEIN: insert new / save
+						AddProductActivity.this.datasource.saveShoppingListProductMapping(selectedStore.getId(), product.getId(),
+								quantity, GlobalValues.NO);
+					}
+
+					AddProductActivity.this.finish();
+				}
 			}
-			
 		});
-		if (AddProductActivity.super.setErrorOnEmptyEditTexts(AddProductActivity.this.editTextIds)) {
-			final Store selectedStore = (Store) AddProductActivity.this.spinnerStores.getSelectedItem();
-			final Unit selectedUnit = (Unit) AddProductActivity.this.spinnerUnits.getSelectedItem();
-			final String productName = AddProductActivity.this.editTextProductName.getText().toString();
-			final String quantity = AddProductActivity.this.editTextQuantity.getText().toString();
-
-			Product product = AddProductActivity.this.datasource.getProductByNameAndUnit(productName,
-					selectedUnit.getId());
-			if (product == null) {
-				AddProductActivity.this.datasource.saveProduct(productName, selectedUnit.getId());
-				product = AddProductActivity.this.datasource.getProductByNameAndUnit(productName, selectedUnit.getId());
-			}
-
-			final ShoppinglistProductMapping alreadyExistingMapping = AddProductActivity.this.datasource
-					.doesShoppinglistProductMappingExist(selectedStore.getId(), product.getId());
-			if (alreadyExistingMapping != null) {
-				// JA: update quantity
-				final double quantityToUpdate = Double.valueOf(alreadyExistingMapping.getQuantity())
-						+ Double.valueOf(quantity);
-				AddProductActivity.this.datasource.updateShoppinglistProductMapping(alreadyExistingMapping.getId(),
-						alreadyExistingMapping.getStore().getId(), alreadyExistingMapping.getProduct().getId(),
-						String.valueOf(quantityToUpdate));
-			} else {
-				// NEIN: insert new / save
-				AddProductActivity.this.datasource.saveShoppingListProductMapping(selectedStore.getId(), product.getId(),
-						quantity, GlobalValues.NO);
-			}
-
-			AddProductActivity.this.finish();
-		}
 	}
 	
 	@Override
